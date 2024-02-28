@@ -15,7 +15,7 @@ public interface MemberDAO {
 
 	void updatePassword(MemberVO memberVO) throws SQLException;
 
-	void deleteById(int id) throws SQLException;
+	void deleteByEmail(String email) throws SQLException;
 
 	MemberVO selectByNickname(String nickname) throws SQLException;
 

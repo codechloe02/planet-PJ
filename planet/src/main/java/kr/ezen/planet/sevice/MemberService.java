@@ -13,7 +13,7 @@ public interface MemberService extends UserDetailsService {
 
 	void updatePassword(MemberVO memberVO);
 
-	void deleteById(MemberVO memberVO);
+	void deleteByEmail(String email);
 
 	MemberVO selectByNickname(String nickname);
 

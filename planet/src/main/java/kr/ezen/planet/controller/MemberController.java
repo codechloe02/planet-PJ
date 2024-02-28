@@ -2,6 +2,8 @@ package kr.ezen.planet.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import kr.ezen.planet.sevice.MemberService;
@@ -40,15 +41,14 @@ public class MemberController {
 
 	@PostMapping("/pwCheck")
 	@ResponseBody
-	public String pwCheck(Authentication auth, @RequestParam("userpw") String password, RedirectAttributes rttr) {
+	public ResponseEntity<?> pwCheck(Authentication auth, @RequestParam("userpw") String password) {
 		UserDetails user = (UserDetails) auth.getPrincipal();
 		if (passwordEncoder.matches(password, user.getPassword())) {
 			log.info("pw 재확인 완료..");
-			return "memberEdit";
+			return ResponseEntity.ok("memberEdit");
 		} else {
 			log.info("비번틀림");
-			rttr.addFlashAttribute("msg", true);
-			return "redirect:/";
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다."); // 비밀번호 불일치
 		}
 	}
 
@@ -87,7 +87,7 @@ public class MemberController {
 
 	@PostMapping("/newpassword")
 	@ResponseBody
-	public String newPassword(Authentication auth, @RequestParam("password") String password,
+	public ResponseEntity<?> newPassword(Authentication auth, @RequestParam("password") String password,
 			@RequestParam("newpassword") String newpassword) {
 		UserDetails user = (UserDetails) auth.getPrincipal();
 		if (passwordEncoder.matches(password, user.getPassword())) {
@@ -96,11 +96,28 @@ public class MemberController {
 			vo.setPassword(passwordEncoder.encode(newpassword));
 			memberService.updatePassword(vo);
 
-			return "redirect:/memberInfo"; 
+			log.info("pw변경완료");
+			return ResponseEntity.ok("/logout");
 		} else {
-			return "redirect:/"; }
+			log.info("비번틀림");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다."); // 비밀번호 불일치
+		}
 	}
-
+	@PostMapping("/deletOk")
+	@ResponseBody
+	public ResponseEntity<?> newPassword(Authentication auth, @RequestParam("userpw") String password) {
+		UserDetails user = (UserDetails) auth.getPrincipal();
+		if (passwordEncoder.matches(password, user.getPassword())) {
+			memberService.deleteByEmail(user.getUsername());
+			log.info("삭제완료");
+			return ResponseEntity.ok("/logout");
+		} else {
+			log.info("비번틀림");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다."); // 비밀번호 불일치
+		}
+	}
+	
+	
 	@PostMapping("/updateOk")
 	public String updateOK(@ModelAttribute(value = "vo") MemberVO vo) {
 		memberService.update(vo);
@@ -140,11 +157,7 @@ public class MemberController {
 		return "redirect:/login";
 	}
 
-	@PostMapping("/deleteOk")
-	public String deleteOkPost(@ModelAttribute(value = "vo") MemberVO vo) {
-		memberService.deleteById(vo);
-		return "/";
-	}
+
 
 	// @Autowired
 	// private JdbcTemplate jdbcTemplate;
@@ -165,10 +178,14 @@ public class MemberController {
 	// return "redirect:/";
 	// }
 
-	// @GetMapping("/emailCheck")
-	// public int mailCheck(@RequestParam(value = "email")String email) {
-	// return memberService.mailCheck(email);
-	// }
+
+	
+	@GetMapping(value = "/join/emailCheck", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String mailCheck(@RequestParam(value = "email")String email) {
+		return memberService.mailCheck(email)+"";
+	}
+	
 
 	// @GetMapping("/usernameCheck")
 	// public int usernameCheck(@RequestParam(value = "username")String username) {

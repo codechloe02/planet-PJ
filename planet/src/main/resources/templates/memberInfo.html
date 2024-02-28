@@ -3,48 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 정보</title>
-<link href="/css/style.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript">
-function submitPassword(password) {
-    $.ajax({
-        url: "/pwCheck",
-        type: "POST",
-        data: {
-            userpw: password
-        },
-        success: function(response) {
-            window.location.href =response;
-        },
-        error: function(error) {
-            alert("비밀번호를 다시 확인해 주세요.");
-        }
-    });
-}
-
-function openPasswordPopup() {
-    var popupWindow = window.open("", "PopupWindow", "width=400,height=200");
-    popupWindow.document.write('<html><head><title>비밀번호 입력</title></head><body>');
-    popupWindow.document.write('<p>비밀번호를 입력해주세요:</p>');
-    popupWindow.document.write('<input type="password" id="passwordInput"><br>');
-    popupWindow.document.write('<button onclick="opener.submitPassword(document.getElementById(\'passwordInput\').value)">제출</button>');
-    popupWindow.document.write('</body></html>');
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	function pwCheck() {
 		var password = prompt('암호를 입력하세요');
 		$.ajax({
@@ -57,9 +17,28 @@ function openPasswordPopup() {
 				window.location.href = response;
 			},
 
-			error : function(error) {
-				var errorMessage = "비밀번호를 다시 확인해 주세요.";
-				alert(errorMessage);
+			  error : function(xhr, status, error) {
+				  var errorMessage = xhr.responseText || "비밀번호를 다시 확인해 주세요.";
+		            alert(errorMessage);
+			}
+		});
+	}
+	
+	function deletOk() {
+		var password = prompt('암호를 입력하세요');
+		$.ajax({
+			url : "/deletOk",
+			type : "POST",
+			data : {
+				userpw : password
+			},
+			success : function(response) {
+				window.location.href = response;
+			},
+
+			  error : function(xhr, status, error) {
+				  var errorMessage = xhr.responseText || "비밀번호를 다시 확인해 주세요.";
+		            alert(errorMessage);
 			}
 		});
 	}
@@ -99,9 +78,9 @@ function openPasswordPopup() {
 				<strong>신뢰도:</strong> <span th:text="${member.reliability}"></span>
 			</p>
 		</div>
-		<button onclick="openPasswordPopup()">비밀번호 입력</button>
 			<input type="button" value="정보수정" onClick="pwCheck()">
-					<button type="button" onclick="location.href='/newpassword'">비밀번호</button>
+			<input type="button" value="회원탈퇴" onClick="deletOk()">
+					<button type="button" onclick="location.href='/newpassword'">비밀번호수정</button>
 	</div>
 </body>
 </html>

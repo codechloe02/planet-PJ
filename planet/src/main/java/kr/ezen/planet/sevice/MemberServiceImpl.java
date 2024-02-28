@@ -77,9 +77,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void deleteById(MemberVO memberVO) {
+	public void deleteByEmail(String email) {
 		try {
-			memberDAO.deleteById(memberVO.getId());
+			memberDAO.deleteByEmail(email);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
