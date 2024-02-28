@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "./mybatis-3-mapper.dtd">
+<mapper namespace="kr.ezen.planet.dao.MemberDAO">
+	<!--저장하기 -->
+	<insert id="insert" parameterType="MemberVO">
+		insert into member
+		values
+		(member_idx.nextval,#{email},#{nickname},#{password},#{name},sysdate,25,#{phonenumber},#{addr},#{addr_d},#{zipcode},#{role})
+	</insert>
+	<!--정보수정하기 -->
+	<update id="update" parameterType="MemberVO">
+		update
+			member
+		set
+			nickname=#{nickname}, name=#{name}, phonenumber=#{phonenumber}, addr=#{addr}, addr_d=#{addr_d}, zipcode=#{zipcode}
+		where
+			email=#{email}
+	</update>
+	<!-- 비번수정 -->
+	<update id="updatePassword" parameterType="MemberVO">
+		update
+			member
+		set
+			password=#{password}
+		where
+			email=#{email}
+	</update>
+	<!-- 회원탈퇴하기 -->
+	<delete id="deleteById" parameterType="int">
+		delete from member where
+		id=#{id}
+	</delete>
+	<!-- username얻기 -->
+	<select id="selectByNickname" parameterType="string"
+		resultType="MemberVO">
+		select * from member where nickname=#{nickname}
+	</select>
+	<!--id으로 얻기 -->
+	<select id="selectById" parameterType="int"
+		resultType="MemberVO">
+		select * from member where id=#{id}
+	</select>
+	<!--email 얻기 -->
+	<select id="selectByEmail" parameterType="string"
+		resultType="MemberVO">
+		select * from member where email=#{email}
+	</select>
+	<!-- email중복체크 -->
+	<select id="mailCheck" parameterType="String" resultType="int">
+		select
+		count(*) from member where email=#{email}
+	</select>
+	<!-- username중복체크 -->
+	<select id="nicknameCheck" parameterType="String"
+		resultType="int">
+		select count(*) from member where nickname=#{nickname}
+	</select>
+	<!-- 모두 얻기 -->
+	<select id="selectAll" resultType="MemberVO">
+		select * from member order by id
+	</select>
+	<select id="pwCheck" parameterType="String" resultType="String">
+		select password from member where email=#{email}
+	</select>
+</mapper>
