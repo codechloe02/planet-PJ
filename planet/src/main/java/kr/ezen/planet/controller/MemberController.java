@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import kr.ezen.planet.sevice.MailService;
 import kr.ezen.planet.sevice.MemberService;
+import kr.ezen.planet.vo.MailVO;
 import kr.ezen.planet.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +30,8 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private MailService mailService;
 
 	@GetMapping(value = { "/", "/index", "/home", "/main" })
 	public String index(Model model) {
@@ -186,9 +190,22 @@ public class MemberController {
 		return memberService.mailCheck(email)+"";
 	}
 	
+	@GetMapping(value = "/join/nicknameCheck", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String nicknameCheck(@RequestParam(value = "nickname")String nickname) {
+		return memberService.nicknameCheck(nickname)+"";
+	}
+	
+	@GetMapping("/forgot-password")
+	public String forgotPassword(){
+		return "forgot-password";
+	}
+	
+	@PostMapping("forgot-password")
+	public String forgotPassword2(@RequestParam("email") String email){
+		MailVO vo = mailService.creatMail(email);
+		mailService.mailSend(vo);
+		return "redirect:/login";
+	}
 
-	// @GetMapping("/usernameCheck")
-	// public int usernameCheck(@RequestParam(value = "username")String username) {
-	// return memberService.usernameCheck(username);
-	// }
 }

@@ -6,123 +6,138 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>회원가입</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
 <style>
 body, html {
-    height: 100%;
-    background-color: black;
-    background-image: url('https://images.unsplash.com/photo-1494526585095-c41746248156?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    
+	height: 100%;
+	background-color: black;
+	background-image:
+		url('https://images.unsplash.com/photo-1494526585095-c41746248156?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
+	background-size: cover;
+	background-position: center;
+	color: white;
 }
 
 .container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40%;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent */
-    border-radius: 10px;
-    color: white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 40%;
+	padding: 20px;
+	background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent */
+	border-radius: 10px;
+	color: white;
 }
 
 .form-control, button {
-    margin-bottom: 8px;
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
+	margin-bottom: 8px;
+	padding: 10px;
+	border-radius: 5px;
+	color: white;
 }
 
 button {
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
+	cursor: pointer;
+	background-color: #4CAF50;
+	color: white;
 }
 
 .form-heading {
-    text-align: center;
-    margin-bottom: 20px;
+	text-align: center;
+	margin-bottom: 20px;
 }
 
 .zipcode-container {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
-.zipcode-container input,
-.zipcode-container button {
-    width: 48%; /* Adjust the width as needed */
+.zipcode-container input, .zipcode-container button {
+	width: 48%; /* Adjust the width as needed */
 }
+
 h2, h3, p {
-    color: white;
+	color: white;
 }
-
 </style>
 </head>
 <body>
-<div class="container">
-    <form method="POST" action="joinOk" class="form-group">
-        <h2 class="form-heading">Join</h2>
-        <div class="col-auto">
-        <span id="message">사용가능한 아이디입니다.</span>
-        </div>
-        <div class="col-auto">
-        <input name="email" id="email" type="email" onkeyup="userEmailCheck()" class="form-control" placeholder="사용하실 email을 입력하세요" autofocus="autofocus" >
-        </div>
-        <input name="password" id="password"  type="password" class="form-control" placeholder="비밀번호 입력">
-        <input name="nickname" id="nickname" type="text" class="form-control" placeholder="닉네임">
-        <input name="name" id="name" type="text" class="form-control" placeholder="실명 입력">
-        <input name="phonenumber" id="phonenumber"  type="text" class="form-control" placeholder="전화번호 입력">
-        <div class="form-group zipcode-container">
-            <input type="text" name="zipcode" id="zipcode" class="form-control" readonly="readonly">
-            <button type="button" class="form-control" onclick="daumPostcode()">우편번호 검색</button>
-        </div>
-        <input name="addr" id="addr"  type="text" class="form-control" placeholder="주소">
-        <input name="addr_d" id="addr_d" type="text" class="form-control" placeholder="상세 주소">
-        <div style="text-align: center;">
-            <button type="submit" >Join</button>
-            <button type="button" onclick="location.href='/'">Home</button>
-        </div>
-    </form>
-</div>
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script></body>
-<script type="text/javascript">
-	// 중복확인하는 함수
-function userEmailCheck(){
-	let email = $("#email").val();
-		if(email.length>=5){
-			if(email.indexOf(" ")!=-1){
-				$("#message").html("공백은 포함할수 없어요").css('color','red');
-			}else{
-				axios.get('/join/emailCheck?email=' + email)
-					.then(function (response) {
-						console.log(response.data);	
-				  	  if(response.data*1==0){
-				  	  	$("#message").html("사용가능한 email입니다.").css('color','white');
-				  	  }else{
-				    	$("#message").html("사용 불가능한 email입니다.").css('color','red');
-				   	 }
-				  })
-				  .catch(function (error) {
-				    // 에러 핸들링
-				    console.log(error);
-				  })
-				  .finally(function () {
-				    // 항상 실행되는 영역
-				  });
-			}
-		}else{
-			$("#message").html("").css('color','black');
-		}
-	}
+	<div class="container">
+		<form method="POST" action="joinOk" class="form-group" onsubmit="return false;">
+			<h2 class="form-heading">Join</h2>
+			<div class="col-auto">
+				<span id="emailMessage"></span>
+			</div>
+			<div class="col-auto">
+				<input name="email" id="email" type="email"
+					onkeyup="userEmailCheck()" class="form-control"
+					placeholder="사용하실 email을 입력하세요" autofocus="autofocus">
+			</div>
+			<input name="password" id="password" type="password"
+				class="form-control" placeholder="비밀번호 입력"> <input
+				name="confirm_password" id="confirm_password" type="password"
+				class="form-control" placeholder="비밀번호 확인"> <span
+				id="nicknameMessage"></span> <input name="nickname" id="nickname"
+				type="text" class="form-control" placeholder="닉네임"
+				onkeyup="nicknameCheck()"><input name="name" id="name"
+				type="text" class="form-control" placeholder="실명 입력"> <input
+				name="phonenumber" id="phonenumber" type="text" class="form-control"
+				placeholder="전화번호 입력">
+			<div class="form-group zipcode-container">
+				<input type="text" name="zipcode" id="zipcode" class="form-control"
+					readonly="readonly">
+				<button type="button" class="form-control" onclick="daumPostcode()">우편번호
+					검색</button>
+			</div>
+			<input name="addr" id="addr" type="text" class="form-control"
+				placeholder="주소"> <input name="addr_d" id="addr_d"
+				type="text" class="form-control" placeholder="상세 주소">
+			<div style="text-align: center;">
+				<button type="submit">Join</button>
+				<button type="button" onclick="location.href='/'">Home</button>
+			</div>
+		</form>
+	</div>
+	<script
+		src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 
+	<script type="text/javascript">
+	function userEmailCheck() {
+	    return new Promise((resolve, reject) => {
+	        let email = $("#email").val();
+	        if (email.length >= 5) {
+	            if (email.indexOf(" ") != -1) {
+	                $("#emailMessage").html("공백은 포함할 수 없어요").css('color', 'red');
+	                resolve(false);
+	            } else {
+	                axios.get('/join/emailCheck?email=' + email)
+	                    .then(function (response) {
+	                        if (response.data * 1 == 0) {
+	                            $("#emailMessage").html("사용 가능한 email입니다.").css('color', 'white');
+	                            resolve(true);
+	                        } else {
+	                            $("#emailMessage").html("사용 불가능한 email입니다.").css('color', 'red');
+	                            resolve(false);
+	                        }
+	                    })
+	                    .catch(function (error) {
+	                        console.log(error);
+	                        resolve(false);
+	                    });
+	            }
+	        } else {
+	            $("#emailMessage").html("").css('color', 'black');
+	            resolve(true);
+	        }
+	    });
+	}
 	// 다음 우편번호 API를 이용한 우편번호 검색 함수
 	function daumPostcode() {
 	    new daum.Postcode({
@@ -140,6 +155,66 @@ function userEmailCheck(){
 	    }).open();
 	    document.getElementById("addr_d").focus();
 	}
+    function checkPasswords() {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirm_password').value;
+        if (password != confirmPassword) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return false;
+        }
+        return true;
+    }
+
+    function nicknameCheck() {
+        return new Promise((resolve, reject) => {
+            let nickname = $("#nickname").val();
+            if (nickname.length > 2) {
+                axios.get('/join/nicknameCheck?nickname=' + nickname)
+                    .then(function (response) {
+                        if (response.data * 1 == 0) {
+                            $("#nicknameMessage").html("사용 가능한 닉네임입니다.").css('color', 'white');
+                            resolve(true);
+                        } else {
+                            $("#nicknameMessage").html("사용 불가능한 닉네임입니다.").css('color', 'red');
+                            resolve(false);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        resolve(false);
+                    });
+            } else {
+                $("#nicknameMessage").html("닉네임을 입력해주세요.").css('color', 'red');
+                resolve(false);
+            }
+        });
+    }
+
+ // 폼 검증을 위한 비동기 함수
+    async function checkForm() {
+        // 모든 검증 함수를 비동기적으로 실행
+        const emailValid = await userEmailCheck();
+        const nicknameValid = await nicknameCheck();
+        const passwordsValid = checkPasswords(); // 비밀번호 검증은 동기적으로 처리
+
+        // 모든 검증이 통과되면 true를 반환
+        return emailValid && nicknameValid && passwordsValid;
+    }
+
+    // 폼 제출 이벤트 핸들러
+   $('form').submit(async function(event) {
+    // 폼 제출 이벤트 방지
+    event.preventDefault();
+
+    // 비동기 폼 검증
+    const formIsValid = await checkForm();
+    if (formIsValid) {
+        // 검증이 성공하면 폼 제출
+        this.submit();
+    } else {
+        // 검증 실패 시 추가적인 사용자 피드백을 제공할 수 있습니다.
+    }
+});
 </script>
 </body>
 </html>
