@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "./mybatis-3-mapper.dtd">
+<mapper namespace="kr.ezen.planet.dao.MyPageDAO">
+
+<select id="findById" parameterType="string" resultType="int">
+select id form member where email={email}
+</select>
+
+<select id="memberInfo" resultMap="memberVO">
+select MEMBER_NAME , MEMBER_IMG , MEMBER_POINT , MEMBER_DEVPOINT from MP_MEMBER where MEMBER_ID = #{memberId}
+</select>
+
+<select id="memberLog" resultMap="LogVO">
+select a.BNO , a.RNO ,a.member_id ,a.QUESTIONID , a.CATEGORI , a.LOGDATE , b.title,b.writer ,b.bgno,c.writer from MP_LOG a 
+left outer join MP_BOARD b on a.bno = b.bno
+left outer join MP_REPLY c on a.rno = c.rno
+where a.member_id = #{memberId} order by a.logdate desc
+</select>
+
+<select id="memberWrite" resultType="kr.co.vo.BoardVO">
+select BNO , TITLE ,WRITER , REGDATE , LIKEHIT , HATEHIT , DEVHIT ,BGNO from MP_BOARD where ID = #{memberId} order by regdate desc
+</select>
+
+<select id="memberReply" resultMap="ReplyVO">
+select b.bno , b.title , b.bgno , b.writer , a.regdate , a.rno from MP_Reply a left outer join MP_Board b
+on a.bno = b.bno
+where a.ID = #{memberId} order by a.regdate desc
+</select>
+
+<select id="memberScrap" resultMap="BoardVO">
+select b.BNO , b.title , b.regdate , b.likehit , b.hatehit , b.devhit , b.bgno, a.scrapdate from MP_SCRAP a right outer join MP_BOARD b
+on a.bno = b.bno where a.member_id = #{memberId} order by a.scrapdate desc
+</select>
+</mapper>

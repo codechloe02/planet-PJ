@@ -7,9 +7,10 @@ import lombok.Data;
 @Data
 public class ReputationVO {
 	private int id; // NOT NULL, PRIMARY KEY
-	private int post_id; // NOT NULL
+	private int trade_id; // NOT NULL
+	private int score;
 	private int member_id; // NOT NULL
 	private String content; // NOT NULL
-	private Date commentdate; // NOT NULL
+	private Date reputationdate; // NOT NULL
 
 }

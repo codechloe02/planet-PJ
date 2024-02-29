@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class GoodVO {
-	private int member_id;
-	private int post_id;
+	private int id; //NOT NULL
+	private int member_id; //NOT NULL
+	private int product_id;  //NOT NULL
 }
