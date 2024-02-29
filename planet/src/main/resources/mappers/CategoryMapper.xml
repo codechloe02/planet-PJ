@@ -5,7 +5,7 @@
 <mapper namespace="kr.ezen.planet.dao.CategoryDAO">
 	<!-- 모두 얻기 -->
 	<select id="selectAll" resultType="CategoryVO">
-		select * from category order by id
+		select * from category
 	</select>
 	<!--id으로 얻기 -->
 	<select id="selectById" parameterType="String"

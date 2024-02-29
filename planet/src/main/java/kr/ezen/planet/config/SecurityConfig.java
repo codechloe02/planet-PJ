@@ -24,7 +24,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((authorizeRequests) -> {
 			authorizeRequests
 					// 지정 주소에 대한 권한 설정 : .permitAll() 은 권한이 없다.(누구나 접근 가능)
-					.requestMatchers("/", "/home", "/index", "/main", "/join", "/login","/test/**","/forgot-password").permitAll()
+					.requestMatchers("/", "/home", "/index", "/main", "/join", "/login","/test/**","/forgot-password","list").permitAll()
 					// 회원가입 폼과 회원가입 완료는 누구나 접근 가능
 					.requestMatchers("/join", "/joinOk","/join/**").permitAll()
 					// 지정 주소에 대한 권한 설정 **은 하위폴더 포함 모두
