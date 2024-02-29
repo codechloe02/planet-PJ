@@ -24,12 +24,12 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((authorizeRequests) -> {
 			authorizeRequests
 					// 지정 주소에 대한 권한 설정 : .permitAll() 은 권한이 없다.(누구나 접근 가능)
-					.requestMatchers("/", "/home", "/index", "/main", "/join", "/login","/test/**","/forgot-password","list").permitAll()
+					.requestMatchers("/", "/home", "/index", "/main", "/join", "/login","/test/**","/forgot-password","/list").permitAll()
 					// 회원가입 폼과 회원가입 완료는 누구나 접근 가능
 					.requestMatchers("/join", "/joinOk","/join/**").permitAll()
 					// 지정 주소에 대한 권한 설정 **은 하위폴더 포함 모두
 					.requestMatchers("/css/**", "/js/**", "/images/**", "/upload/**").permitAll()
-					.requestMatchers("/mypage","/memberUpdate").hasRole("USER")
+					.requestMatchers("/mypage","/memberUpdate","/editor","/summernoteResult2").hasRole("USER")
 					// 지정 주소에 대한 권한 설정 : hasRole(권한)은 지정 권한이 있는 사용자만 접근이 가능하다.
 					.requestMatchers("/admin", "/admin/**").hasRole("ADMIN").requestMatchers("/dba", "/dba/**")
 					.hasAnyRole("ADMIN")

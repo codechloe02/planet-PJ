@@ -1,7 +1,9 @@
 package kr.ezen.planet.sevice;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import kr.ezen.planet.vo.MemberVO;
@@ -26,7 +28,9 @@ public interface MemberService extends UserDetailsService {
 	int nicknameCheck(String nickname);
 
 	List<MemberVO> selectAll();
-	
+
 	String pwCheck(String email);
+
+	int findUserIdByEmail(String email);
 
 }

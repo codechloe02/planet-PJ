@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Category List</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="category : ${list}">
+                <td th:text="${category.id}">Sample ID</td>
+                <td th:text="${category.name}">Sample Name</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

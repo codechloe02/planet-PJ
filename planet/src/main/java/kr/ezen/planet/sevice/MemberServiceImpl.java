@@ -166,6 +166,19 @@ public class MemberServiceImpl implements MemberService {
 		return email;
 	}
 
+	@Override
+	public int findUserIdByEmail(String email){
+		int member_id=0;
+		try {
+			
+		memberDAO.findUserIdByEmail(email);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return member_id;
+	}
+
 
 
 }

@@ -1,24 +1,33 @@
 package kr.ezen.planet.controller;
 
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.ezen.planet.sevice.CategoryService;
+import kr.ezen.planet.sevice.MemberService;
+import kr.ezen.planet.sevice.ProductService;
+import kr.ezen.planet.vo.CategoryVO;
+import kr.ezen.planet.vo.ProductVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
@@ -26,26 +35,40 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EditorController {
 
-
+	@Autowired
+	private CategoryService categoryService;
+	@Autowired
+	private MemberService memberService;
+	@Autowired
+	private ProductService productService;
 
 	// 파일 업로드 처리 함
-	@GetMapping("/summernote2")
+	@GetMapping("/editor")
 	public String summernote2(Model model) {
-		model.addAttribute("today", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy-MM-dd(E) hh:mm:ss")));
-		return "summernote2";
+		List<CategoryVO> categoryList = categoryService.selectAll();
+		model.addAttribute("categoryList", categoryList);
+		return "editor";
 	}
 
-	@GetMapping("/summernoteResult2")
+	@GetMapping("/postProduct")
 	public String summernoteResult2(Model model) {
-		model.addAttribute("today", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy-MM-dd(E) hh:mm:ss")));
-		return "redirect:/summernote2";
+		return "redirect:/";
 	}
 
-	@PostMapping("/summernoteResult2")
-	public String summernoteResult2(@RequestParam Map<String, String> param, Model model) {
-		// MultipartFile 이것이 파일을 알아서 받아준다.
-		model.addAttribute("map", param);
-		return "summernoteResult2";
+	@PostMapping("/postProduct")
+	public String postProduct(HttpServletRequest request, @ModelAttribute ProductVO productVO,
+			@RequestParam("imageFile") MultipartFile file, RedirectAttributes redirectAttributes) {
+		String user = (String) request.getSession().getAttribute("username");
+		int member_id = memberService.findUserIdByEmail(user);
+		productVO.setMember_id(member_id); // 사용자 ID 설정
+		if (!file.isEmpty()) {
+			String imageUrl = imageUpload(request, file); // 이미지 업로드 메서드 호출
+			productVO.setImg(imageUrl); // 제품 객체에 이미지 URL 설정
+		}
+
+		productService.insert(productVO); // 제품 정보를 데이터베이스에 저장
+
+		return "redirect:/"; // 저장 후 리다이렉션할 페이지 경로
 	}
 
 	@PostMapping("/imageUpload")
@@ -82,10 +105,10 @@ public class EditorController {
 		return saveName;
 	}
 
-
 	@PostMapping("/fileupload")
 	@ResponseBody
-	public Map<String, Object> fileUpload(HttpServletRequest request,  @RequestPart(value = "upload", required = false) MultipartFile upload) {
+	public Map<String, Object> fileUpload(HttpServletRequest request,
+			@RequestPart(value = "upload", required = false) MultipartFile upload) {
 		// 반드시 받는 이름이 "upload"이어야 한다.
 		// json 데이터로 등록
 		// {"uploaded" : 1, "fileName" : "test.jpg", "url" : "/img/test.jpg"}
@@ -118,20 +141,16 @@ public class EditorController {
 			}
 		}
 		/*
-		VO를 만들었다면
-		CkeditorResultVO vo = new CkeditorResultVO();
-		vo.setFileName(saveFileName);
-		vo.setUploaded(1);
-		vo.setUrl(saveName);
-		log.info("리턴값 : " + vo);
-		return vo;
-		*/
+		 * VO를 만들었다면 CkeditorResultVO vo = new CkeditorResultVO();
+		 * vo.setFileName(saveFileName); vo.setUploaded(1); vo.setUrl(saveName);
+		 * log.info("리턴값 : " + vo); return vo;
+		 */
 		// VO가 없다면 맵으로 받아 처리
-		 Map<String, Object> map = new HashMap<>();        
-		 map.put("fileName", saveFileName);        
-		 map.put("uploaded", 1);
-		 map.put("url", saveName);
-		 return map;
-	}	
-	//---------------------------------------------------------------------------------------------------------------
+		Map<String, Object> map = new HashMap<>();
+		map.put("fileName", saveFileName);
+		map.put("uploaded", 1);
+		map.put("url", saveName);
+		return map;
+	}
+	// ---------------------------------------------------------------------------------------------------------------
 }

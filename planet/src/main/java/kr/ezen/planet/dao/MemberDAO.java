@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.ezen.planet.vo.MemberVO;
 
@@ -31,4 +32,5 @@ public interface MemberDAO {
 	
 	String pwCheck(String email) throws SQLException;
 
+	int findUserIdByEmail(String email) throws SQLException;
 }

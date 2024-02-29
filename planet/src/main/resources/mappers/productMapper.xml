@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "./mybatis-3-mapper.dtd">
+<mapper namespace="kr.ezen.planet.dao.ProductDAO">
+	<!-- // 1. 저장 -->
+	<insert id="insert" parameterType="ProductVO">
+		INSERT INTO product (id, member_id, productName, cost, title, text, img,
+		productdate, complete, completedate, category_id)
+		VALUES (product_idx.nextval, #{member_id}, #{productName}, #{cost},
+		#{title}, #{text}, #{img}, sysdate, 0, '', #{category_id})
+	</insert>
+
+</mapper>

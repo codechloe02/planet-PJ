@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>editor</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<style>
+.form-section {
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+.form-section input[type="text"], .form-section textarea, .form-section .dropdown
+	{
+	width: 100%;
+}
+
+.form-section label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.gray-background {
+	background-color: #6c757d; /* Bootstrap's gray color */
+	color: white;
+}
+
+.gray-background:hover {
+	background-color: #5a6268; /* Darker shade for hover effect */
+}
+
+#submitBtn, #homeBtn {
+	margin-top: 20px;
+}
+</style>
+</head>
+</body>
+<script type="text/javascript">
+	$(function() {
+		$("#homeBtn").click(function() {
+			location.href = '/';
+		});
+
+		$('#text').summernote(
+				{
+					lang : "ko-KR",
+					placeholder : '내용을 입력하세요',
+					tabsize : 2,
+					height : 320,
+					toolbar : [ [ 'style', [ 'style' ] ],
+							[ 'font', [ 'bold', 'underline', 'clear' ] ],
+							[ 'color', [ 'color' ] ],
+							[ 'para', [ 'ul', 'ol', 'paragraph' ] ],
+							[ 'table', [ 'table' ] ],
+							[ 'insert', [ 'link', 'picture', 'video' ] ],
+							[ 'view', [ 'fullscreen', 'codeview', 'help' ] ] ],
+					focus : true,
+					// 이미지가 1MB를 넘을경우 수동으로 업로드를 처리하고 실행될 코드를 지정해준다.
+					callbacks : {
+						onImageUpload : function(files, editor, welEditable) {
+							for (var i = files.length - 1; i >= 0; i--) {
+								sendFile(files[i], this);
+							}
+						}
+					}
+				});
+	});
+	// 실제 업로드되는 서버의 파일을 Ajax로 호출해 줘야한다.
+	function sendFile(file, el) {
+		// 폼 작성
+		var form_data = new FormData();
+		form_data.append('file', file);
+		// Ajax 호출
+		$.ajax({
+			data : form_data,
+			type : "POST",
+			url : '/imageUpload',
+			cache : false,
+			contentType : false,
+			enctype : 'multipart/form-data',
+			processData : false,
+			success : function(img_name) { // 성공
+				$(el).summernote('editor.insertImage', img_name);
+			}
+		});
+	}
+	function selectCategory(element) {
+		var dropdownButton = document.getElementById('dropdownMenuButton');
+		var selectedCategoryName = document
+				.getElementById('selectedCategoryName');
+		if (dropdownButton) {
+			dropdownButton.textContent = element.textContent;
+		}
+
+		if (selectedCategoryName) {
+			selectedCategoryName.textContent = element.textContent;
+		}
+
+		document.getElementById('selectedCategoryId').value = element
+				.getAttribute('data-category-id');
+	}
+
+	function formatNumber(input) {
+		var numericValue = input.value.replace(/,/g, '')
+				.replace(/[^\d.-]/g, '');
+		var formattedNumber = numericValue
+				.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		input.value = formattedNumber;
+		document.getElementById('cost').value = numericValue;
+	}
+</script>
+</head>
+
+
+
+<body>
+	<form action="/postProduct" method="post" enctype="multipart/form-data"
+		class="container mt-5">
+		<div class="form-row align-items-center">
+			<div class="col-auto">
+				<div class="dropdown">
+					<button class="btn dropdown-toggle gray-background" type="button"
+						id="dropdownMenuButton" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">Category</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<div th:each="category : ${categoryList}" class="dropdown-item">
+							<a href="javascript:void(0)" th:text="${category.name}"
+								th:data-category-id="${category.id}"
+								onclick="selectCategory(this)"></a> <input type="hidden"
+								id="selectedCategoryId" name="category_id" value="">
+						</div>
+					</div>
+				</div>
+				<div class="col-auto">
+					<input type="text" name="productName" id="productName"
+						placeholder="제품코드 입력해주세요"> <input type="text"
+						id="formattedNumber" oninput="formatNumber(this)"
+						placeholder="가격 입력해주세요"> <input type="hidden" id="cost"
+						name="cost">
+				</div>
+			</div>
+		</div>
+
+		<div class="form-section">
+			<input type="text" name="title" id="title"
+				placeholder="글 제목을 입력해 주시기 바랍니다." required>
+			<textarea id="text" name="text" th:class="form-control" rows="10"
+				required></textarea>
+
+			<input type="submit" id="submitBtn" class="btn gray-background"
+				value="글올리기"> <input type="button" id="homeBtn"
+				class="btn gray-background" value="Home으로">
+		</div>
+	</form>
+</body>
+</html>

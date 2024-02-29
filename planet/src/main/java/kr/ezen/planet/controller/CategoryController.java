@@ -20,7 +20,7 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@GetMapping("list")
+	@GetMapping("/list")
 	public String catelist(Model model) {
 		List<CategoryVO> list = categoryService.selectAll();
 		log.info("하하하하");

@@ -12,24 +12,26 @@
 	<!--정보수정하기 -->
 	<update id="update" parameterType="MemberVO">
 		update
-			member
+		member
 		set
-			nickname=#{nickname}, name=#{name}, phonenumber=#{phonenumber}, addr=#{addr}, addr_d=#{addr_d}, zipcode=#{zipcode}
+		nickname=#{nickname}, name=#{name}, phonenumber=#{phonenumber}, addr=#{addr},
+		addr_d=#{addr_d}, zipcode=#{zipcode}
 		where
-			email=#{email}
+		email=#{email}
 	</update>
 	<!-- 비번수정 -->
 	<update id="updatePassword" parameterType="MemberVO">
 		update
-			member
+		member
 		set
-			password=#{password}
+		password=#{password}
 		where
-			email=#{email}
+		email=#{email}
 	</update>
 	<!-- 회원탈퇴하기 -->
 	<delete id="deleteByEmail" parameterType="MemberVO">
-		delete from member where
+		delete from member
+		where
 		email=#{email}
 	</delete>
 	<!-- username얻기 -->
@@ -49,7 +51,8 @@
 	</select>
 	<!-- email중복체크 -->
 	<select id="mailCheck" parameterType="string" resultType="int">
-		select count(*) from member where email=#{email}
+		select
+		count(*) from member where email=#{email}
 	</select>
 	<!-- username중복체크 -->
 	<select id="nicknameCheck" parameterType="string"
@@ -58,9 +61,15 @@
 	</select>
 	<!-- 모두 얻기 -->
 	<select id="selectAll" resultType="MemberVO">
-		select * from member order by id
+		select * from member order by
+		id
 	</select>
 	<select id="pwCheck" parameterType="String" resultType="String">
-		select password from member where email=#{email}
+		select
+		password from member where email=#{email}
+	</select>
+	<select id="findUserIdByEmail" parameterType="string"
+		resultType="int">
+		select id form member where email={email}
 	</select>
 </mapper>
