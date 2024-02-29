@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "./mybatis-3-mapper.dtd">
+<mapper namespace="kr.ezen.planet.dao.CategoryDAO">
+	<!-- 모두 얻기 -->
+	<select id="selectAll" resultType="CategoryVO">
+		select * from category order by id
+	</select>
+	<!--id으로 얻기 -->
+	<select id="selectById" parameterType="String"
+		resultType="int">
+		select * from category where name=#{name}
+	</select>
+	<!--name 얻기 -->
+	<select id="selectByName" parameterType="string"
+		resultType="MemberVO">
+		select * from name where id=#{id}
+	</select>
+
+</mapper>
