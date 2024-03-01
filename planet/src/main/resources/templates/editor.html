@@ -91,8 +91,8 @@
 			contentType : false,
 			enctype : 'multipart/form-data',
 			processData : false,
-			success : function(img_name) { // 성공
-				$(el).summernote('editor.insertImage', img_name);
+			success: function(img_name) { // 서버로부터 이미지 URL을 반환받음
+			    $(el).summernote('insertImage', img_name); // 에디터에 이미지 삽입
 			}
 		});
 	}
@@ -109,7 +109,7 @@
 		}
 
 		document.getElementById('selectedCategoryId').value = element
-				.getAttribute('data-category-id');
+				.getAttribute('categoryid');
 	}
 
 	function formatNumber(input) {
@@ -139,7 +139,7 @@
 							<a href="javascript:void(0)" th:text="${category.name}"
 								th:data-category-id="${category.id}"
 								onclick="selectCategory(this)"></a> <input type="hidden"
-								id="selectedCategoryId" name="category_id" value="">
+								id="selectedCategoryId" name="categoryid" value="">
 						</div>
 					</div>
 				</div>

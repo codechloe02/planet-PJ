@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,16 +54,20 @@ public class EditorController {
 	}
 
 	@PostMapping("/postProduct")
-	public String postProduct(HttpServletRequest request, @ModelAttribute ProductVO productVO,
-			@RequestParam("imageFile") MultipartFile file, RedirectAttributes redirectAttributes) {
+	public String postProduct(HttpServletRequest request, @RequestParam("categoryid") String categoryid,
+			@RequestParam("cost") String cost, @RequestParam(value = "img_name", required = false) String img_name,
+			@ModelAttribute ProductVO productVO, RedirectAttributes redirectAttributes) {
+
+		int category_id = Integer.parseInt(categoryid);
+		productVO.setCategory_id(category_id);
 		String user = (String) request.getSession().getAttribute("username");
 		int member_id = memberService.findUserIdByEmail(user);
 		productVO.setMember_id(member_id); // 사용자 ID 설정
-		if (!file.isEmpty()) {
-			String imageUrl = imageUpload(request, file); // 이미지 업로드 메서드 호출
-			productVO.setImg(imageUrl); // 제품 객체에 이미지 URL 설정
+		if (!img_name.isEmpty()) {
+			productVO.setImg(img_name); // 제품 객체에 이미지 URL 설정
 		}
-
+		int Ncost = Integer.parseInt(cost);
+		productVO.setCost(Ncost);
 		productService.insert(productVO); // 제품 정보를 데이터베이스에 저장
 
 		return "redirect:/"; // 저장 후 리다이렉션할 페이지 경로
