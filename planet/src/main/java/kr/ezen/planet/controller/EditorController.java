@@ -1,7 +1,6 @@
 package kr.ezen.planet.controller;
 
 import java.io.File;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,10 +56,10 @@ public class EditorController {
 	}
 
 	@PostMapping("/postProduct")
-	public String postProduct(HttpServletRequest request, Authentication auth,@RequestParam("selectedCategoryId") String  selectedCategoryId , @RequestParam("price") String price,
+	public String postProduct(HttpServletRequest request, Authentication auth,@RequestParam("categoryid") String  categoryid , @RequestParam("price") String price,
 			@ModelAttribute ProductVO productVO, RedirectAttributes redirectAttributes) {
 		
-		log.info("==============================" + selectedCategoryId);
+		log.info("==============================" + categoryid);
 		
 		//log.info("--------------------" + category_id);
 		
