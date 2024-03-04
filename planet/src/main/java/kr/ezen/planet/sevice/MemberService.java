@@ -1,9 +1,7 @@
 package kr.ezen.planet.sevice;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import kr.ezen.planet.vo.MemberVO;

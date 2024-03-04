@@ -57,11 +57,14 @@ public class EditorController {
 	}
 
 	@PostMapping("/postProduct")
-	public String postProduct(HttpServletRequest request, Authentication auth, @RequestParam("price") String price,
+	public String postProduct(HttpServletRequest request, Authentication auth,@RequestParam("selectedCategoryId") String  selectedCategoryId , @RequestParam("price") String price,
 			@ModelAttribute ProductVO productVO, RedirectAttributes redirectAttributes) {
-
-		int category_id = 1;
-		productVO.setCategory_id(category_id);
+		
+		log.info("==============================" + selectedCategoryId);
+		
+		//log.info("--------------------" + category_id);
+		
+		productVO.setCategory_id(1);
 		String email = null;
 		if (auth != null) {
 			Object prinipal = auth.getPrincipal();
