@@ -47,6 +47,7 @@ public class EditorController {
 	public String summernote2(Model model) {
 		List<CategoryVO> categoryList = categoryService.selectAll();
 		model.addAttribute("categoryList", categoryList);
+		log.info("----------------------" + categoryList);
 		return "editor";
 	}
 
@@ -56,14 +57,14 @@ public class EditorController {
 	}
 
 	@PostMapping("/postProduct")
-	public String postProduct(HttpServletRequest request, Authentication auth,@RequestParam("categoryid") String  categoryid , @RequestParam("price") String price,
+	public String postProduct(HttpServletRequest request, Authentication auth,@RequestParam("categoryid") String categoryid , @RequestParam("price") String price,
 			@ModelAttribute ProductVO productVO, RedirectAttributes redirectAttributes) {
 		
 		log.info("==============================" + categoryid);
 		
 		//log.info("--------------------" + category_id);
-		
-		productVO.setCategory_id(1);
+		int category = Integer.parseInt(categoryid);
+		productVO.setCategory_id(category);
 		String email = null;
 		if (auth != null) {
 			Object prinipal = auth.getPrincipal();

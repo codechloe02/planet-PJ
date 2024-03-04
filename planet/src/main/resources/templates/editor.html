@@ -125,47 +125,44 @@
 		str = String(str);
 		return str.replace(/[^\d]+/g, '');
 	}
+
+	function getCategoryID() {
+		var selectElement = document.getElementById('categorySelect');
+		var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+		console.log('Selected Category ID: ' + selectedValue + "khkjhkjhkjh"); // 콘솔에 선택된 ID 출력
+
+	}
 </script>
 </head>
 
 
 
 <body>
-	<form action="/postProduct" method="post" enctype="multipart/form-data"
-		class="container mt-5">
+	<form action="/postProduct" method="post" enctype="multipart/form-data" class="container mt-5">
 		<div class="form-row align-items-center">
 			<div class="col-auto">
 				<div class="dropdown">
-					<button class="btn dropdown-toggle gray-background" type="button"
-						id="dropdownMenuButton" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">Category</button>
+					<button class="btn dropdown-toggle gray-background" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Category
+					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<div th:each="category : ${categoryList}" class="dropdown-item">
-							<a href="javascript:void(0)" th:text="${category.name}"
-								th:data-category-id="${category.id}"
-								onclick="selectCategory(this)"></a> <input type="hidden"
-								id="selectedCategoryId" name="categoryid" value="">
-						</div>
+						<th:block th:each="category : ${categoryList}">
+							<a class="dropdown-item" href="javascript:void(0)" th:text="${category.name}" th:attr="onclick='selectCategory(this)', categoryid=${category.id}"></a>
+						</th:block>
+						<input type="hidden" id="selectedCategoryId" name="categoryid" value="">
 					</div>
 				</div>
-				<div class="col-auto">
-					<input type="text" name="productName" id="productName"
-						placeholder="제품코드 입력해주세요"> <input type="number" id="price"
-						name="price"
-						placeholder="가격 입력해주세요" />
-				</div>
+			</div>
+			<div class="col-auto">
+				<input type="text" name="productName" id="productName" placeholder="제품코드 입력해주세요">
+				<input type="number" id="price" name="price" placeholder="가격 입력해주세요" />
 			</div>
 		</div>
-
 		<div class="form-section">
-			<input type="text" name="title" id="title"
-				placeholder="글 제목을 입력해 주시기 바랍니다." required>
-			<textarea id="text" name="text" th:class="form-control" rows="10"
-				required></textarea>
-
-			<input type="submit" id="submitBtn" class="btn gray-background"
-				value="글올리기"> <input type="button" id="homeBtn"
-				class="btn gray-background" value="Home으로">
+			<input type="text" name="title" id="title" placeholder="글 제목을 입력해 주시기 바랍니다." required>
+			<textarea id="text" name="text" th:class="form-control" rows="10" required></textarea>
+			<input type="submit" id="submitBtn" class="btn gray-background" value="글올리기">
+			<input type="button" id="homeBtn" class="btn gray-background" value="Home으로">
 		</div>
 	</form>
 </body>
