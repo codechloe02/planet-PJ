@@ -171,7 +171,7 @@ public class MemberServiceImpl implements MemberService {
 		int member_id=0;
 		try {
 			
-		memberDAO.findUserIdByEmail(email);
+			member_id = memberDAO.findUserIdByEmail(email);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

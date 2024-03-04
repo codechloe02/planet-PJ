@@ -8,7 +8,7 @@
 		INSERT INTO product (id, member_id, productName, cost, title, text, img,
 		productdate, complete, completedate, category_id)
 		VALUES (product_idx.nextval, #{member_id}, #{productName}, #{cost},
-		#{title}, #{text}, #{img}, sysdate, 0, '', #{category_id})
+		#{title}, #{text}, '', sysdate, 0, '', #{category_id})
 	</insert>
 
 </mapper>

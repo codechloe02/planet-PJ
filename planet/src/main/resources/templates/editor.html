@@ -91,8 +91,8 @@
 			contentType : false,
 			enctype : 'multipart/form-data',
 			processData : false,
-			success: function(img_name) { // 서버로부터 이미지 URL을 반환받음
-			    $(el).summernote('insertImage', img_name); // 에디터에 이미지 삽입
+			success : function(img_name) { // 서버로부터 이미지 URL을 반환받음
+				$(el).summernote('insertImage', img_name); // 에디터에 이미지 삽입
 			}
 		});
 	}
@@ -112,13 +112,18 @@
 				.getAttribute('categoryid');
 	}
 
-	function formatNumber(input) {
-		var numericValue = input.value.replace(/,/g, '')
-				.replace(/[^\d.-]/g, '');
-		var formattedNumber = numericValue
-				.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		input.value = formattedNumber;
-		document.getElementById('cost').value = numericValue;
+	function inputNumberFormat(obj) {
+		obj.value = comma(uncomma(obj.value));
+	}
+
+	function comma(str) {
+		str = String(str);
+		return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	}
+
+	function uncomma(str) {
+		str = String(str);
+		return str.replace(/[^\d]+/g, '');
 	}
 </script>
 </head>
@@ -145,10 +150,9 @@
 				</div>
 				<div class="col-auto">
 					<input type="text" name="productName" id="productName"
-						placeholder="제품코드 입력해주세요"> <input type="text"
-						id="formattedNumber" oninput="formatNumber(this)"
-						placeholder="가격 입력해주세요"> <input type="hidden" id="cost"
-						name="cost">
+						placeholder="제품코드 입력해주세요"> <input type="number" id="price"
+						name="price"
+						placeholder="가격 입력해주세요" />
 				</div>
 			</div>
 		</div>

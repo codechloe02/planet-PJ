@@ -1,6 +1,7 @@
 package kr.ezen.planet.controller;
 
 import java.io.File;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -54,20 +57,28 @@ public class EditorController {
 	}
 
 	@PostMapping("/postProduct")
-	public String postProduct(HttpServletRequest request, @RequestParam("categoryid") String categoryid,
-			@RequestParam("cost") String cost, @RequestParam(value = "img_name", required = false) String img_name,
+	public String postProduct(HttpServletRequest request, Authentication auth, @RequestParam("price") String price,
 			@ModelAttribute ProductVO productVO, RedirectAttributes redirectAttributes) {
 
-		int category_id = Integer.parseInt(categoryid);
+		int category_id = 1;
 		productVO.setCategory_id(category_id);
-		String user = (String) request.getSession().getAttribute("username");
-		int member_id = memberService.findUserIdByEmail(user);
-		productVO.setMember_id(member_id); // 사용자 ID 설정
-		if (!img_name.isEmpty()) {
-			productVO.setImg(img_name); // 제품 객체에 이미지 URL 설정
+		String email = null;
+		if (auth != null) {
+			Object prinipal = auth.getPrincipal();
+			if (prinipal instanceof UserDetails) {
+				email = ((UserDetails) prinipal).getUsername();
+			} else {
+				email =prinipal.toString();
+			}
 		}
-		int Ncost = Integer.parseInt(cost);
-		productVO.setCost(Ncost);
+		int member_id = memberService.findUserIdByEmail(email);
+		log.info("=======================" + email);
+		log.info("=======================" + member_id);
+		productVO.setMember_id(member_id); // 사용자 ID 설정
+		int cost = Integer.parseInt(price);
+		log.info(price);
+
+		productVO.setCost(cost);
 		productService.insert(productVO); // 제품 정보를 데이터베이스에 저장
 
 		return "redirect:/"; // 저장 후 리다이렉션할 페이지 경로
