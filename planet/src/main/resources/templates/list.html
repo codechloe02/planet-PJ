@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Category List</title>
+<meta charset="UTF-8">
+<title></title>
 </head>
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="category : ${list}">
-                <td th:text="${category.id}">Sample ID</td>
-                <td th:text="${category.name}">Sample Name</td>
-            </tr>
-        </tbody>
-    </table>
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Member ID</th>
+				<th>Product Name</th>
+				<th>Cost</th>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Image</th>
+				<th>Product Date</th>
+				<th>Complete</th>
+				<th>Completion Date</th>
+				<th>Category ID</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="list : ${productList}">
+				<td>[[${list.id}]]</td>
+				<td>[[${list.member_id}]]</td>
+				<td>[[${list.productName}]]</td>
+				<td>[[${list.cost}]]</td>
+				<td>[[${list.title}]]</td>
+				<td>[[${list.text}]]</td>
+				<td>[[${list.img}]]</td>
+				<td>[[${list.productdate}]]</td>
+				<td>[[${list.complete}]]</td>
+				<td>[[${list.completedate}]]</td>
+				<td>[[${list.category_id}]]</td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>

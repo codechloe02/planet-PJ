@@ -15,4 +15,9 @@
 		#{category_id})
 	</insert>
 
+
+	<select id="selectAll" resultType="ProductVO">
+		select * from product
+	</select>
+
 </mapper>

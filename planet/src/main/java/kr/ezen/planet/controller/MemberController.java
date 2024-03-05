@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import kr.ezen.planet.sevice.MailService;
 import kr.ezen.planet.sevice.MemberService;
+import kr.ezen.planet.sevice.ProductService;
 import kr.ezen.planet.vo.MailVO;
 import kr.ezen.planet.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class MemberController {
 
 	@GetMapping(value = { "/", "/index", "/home", "/main" })
 	public String index(Model model) {
+
 		return "index";
 	}
 
@@ -107,6 +109,7 @@ public class MemberController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다."); // 비밀번호 불일치
 		}
 	}
+
 	@PostMapping("/deletOk")
 	@ResponseBody
 	public ResponseEntity<?> newPassword(Authentication auth, @RequestParam("userpw") String password) {
@@ -120,8 +123,7 @@ public class MemberController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다."); // 비밀번호 불일치
 		}
 	}
-	
-	
+
 	@PostMapping("/updateOk")
 	public String updateOK(@ModelAttribute(value = "vo") MemberVO vo) {
 		memberService.update(vo);
@@ -161,8 +163,6 @@ public class MemberController {
 		return "redirect:/login";
 	}
 
-
-
 	// @Autowired
 	// private JdbcTemplate jdbcTemplate;
 
@@ -182,27 +182,25 @@ public class MemberController {
 	// return "redirect:/";
 	// }
 
-
-	
 	@GetMapping(value = "/join/emailCheck", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String mailCheck(@RequestParam(value = "email")String email) {
-		return memberService.mailCheck(email)+"";
+	public String mailCheck(@RequestParam(value = "email") String email) {
+		return memberService.mailCheck(email) + "";
 	}
-	
+
 	@GetMapping(value = "/join/nicknameCheck", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String nicknameCheck(@RequestParam(value = "nickname")String nickname) {
-		return memberService.nicknameCheck(nickname)+"";
+	public String nicknameCheck(@RequestParam(value = "nickname") String nickname) {
+		return memberService.nicknameCheck(nickname) + "";
 	}
-	
+
 	@GetMapping("/forgot-password")
-	public String forgotPassword(){
+	public String forgotPassword() {
 		return "forgot-password";
 	}
-	
+
 	@PostMapping("forgot-password")
-	public String forgotPassword2(@RequestParam("email") String email){
+	public String forgotPassword2(@RequestParam("email") String email) {
 		MailVO vo = mailService.creatMail(email);
 		mailService.mailSend(vo);
 		return "redirect:/login";

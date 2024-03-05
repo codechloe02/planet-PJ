@@ -1,6 +1,7 @@
 package kr.ezen.planet.sevice;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,4 +29,15 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
+	@Override
+	public List<ProductVO> selectAll() {
+		List<ProductVO> list = null;
+		try {
+			list = productDAO.selectAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
 }

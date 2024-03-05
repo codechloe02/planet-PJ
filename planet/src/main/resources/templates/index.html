@@ -45,6 +45,7 @@ a:visited {
 			[ <a th:href="@{/logout}">Logout</a> ]
 			[ <a th:href="@{/memberInfo}">회원정보</a> ]
 			[ <a th:href="@{/editor}">글쓰기</a> ]
+			[ <a th:href="@{/list}">글목록 보기</a> ]
 		</th:block>
 		<th:block th:if="${session.user == NULL}">
 			로그인 화면이 나와야 한다.
@@ -53,5 +54,6 @@ a:visited {
 			<a th:href="@{/join}">회원가입</a>
 		</th:block>
 	</div>
+
 </body>
 </html>

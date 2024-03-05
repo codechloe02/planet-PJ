@@ -112,24 +112,11 @@
 				.getAttribute('categoryid');
 	}
 
-	function inputNumberFormat(obj) {
-		obj.value = comma(uncomma(obj.value));
-	}
-
-	function comma(str) {
-		str = String(str);
-		return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-	}
-
-	function uncomma(str) {
-		str = String(str);
-		return str.replace(/[^\d]+/g, '');
-	}
-
+	
 	function getCategoryID() {
 		var selectElement = document.getElementById('categorySelect');
 		var selectedValue = selectElement.options[selectElement.selectedIndex].value;
-		console.log('Selected Category ID: ' + selectedValue + "khkjhkjhkjh"); // 콘솔에 선택된 ID 출력
+		console.log('Selected Category ID: ' + selectedValue + "khkjhkjhkjh");
 
 	}
 </script>

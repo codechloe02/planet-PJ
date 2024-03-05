@@ -40,7 +40,16 @@ public class EditorController {
 	@Autowired
 	private ProductService productService;
 
+	@GetMapping("/list")
+	public String list(Model model) {
+		List<ProductVO> productList = productService.selectAll();
+		log.info("----------------------" + productList);
+		model.addAttribute("productList", productList);
+		return "list";
+	}
+
 	// 파일 업로드 처리 함
+
 	@GetMapping("/editor")
 	public String summernote2(Model model) {
 		List<CategoryVO> categoryList = categoryService.selectAll();
@@ -75,7 +84,7 @@ public class EditorController {
 				File saveFile = new File(uploadPath, saveFileName);
 				// 파일 복사
 				FileCopyUtils.copy(file.getBytes(), saveFile);
-				productVO.setImg(uploadPath+saveFileName);
+				productVO.setImg(uploadPath + saveFileName);
 			} catch (Exception e) {
 			}
 		} else {
