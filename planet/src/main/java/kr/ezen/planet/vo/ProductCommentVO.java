@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class ProducCommentVO {
+public class ProductCommentVO {
 	private int id; // NOT NULL, PRIMARY KEY
 	private int product_id; // NOT NULL
 	private int member_id; // NOT NULL

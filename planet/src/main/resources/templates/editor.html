@@ -91,8 +91,8 @@
 			contentType : false,
 			enctype : 'multipart/form-data',
 			processData : false,
-			success : function(img_name) { // 서버로부터 이미지 URL을 반환받음
-				$(el).summernote('insertImage', img_name); // 에디터에 이미지 삽입
+			success : function(img_name) { // 성공
+				$(el).summernote('editor.insertImage', img_name);
 			}
 		});
 	}
@@ -138,31 +138,41 @@
 
 
 <body>
-	<form action="/postProduct" method="post" enctype="multipart/form-data" class="container mt-5">
+	<form action="/postProduct" method="post" enctype="multipart/form-data"
+		class="container mt-5">
 		<div class="form-row align-items-center">
 			<div class="col-auto">
 				<div class="dropdown">
-					<button class="btn dropdown-toggle gray-background" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Category
-					</button>
+					<button class="btn dropdown-toggle gray-background" type="button"
+						id="dropdownMenuButton" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">Category</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 						<th:block th:each="category : ${categoryList}">
-							<a class="dropdown-item" href="javascript:void(0)" th:text="${category.name}" th:attr="onclick='selectCategory(this)', categoryid=${category.id}"></a>
+							<a class="dropdown-item" href="javascript:void(0)"
+								th:text="${category.name}"
+								th:attr="onclick='selectCategory(this)', categoryid=${category.id}"></a>
 						</th:block>
-						<input type="hidden" id="selectedCategoryId" name="categoryid" value="">
+						<input type="hidden" id="selectedCategoryId" name="categoryid"
+							value="">
 					</div>
 				</div>
 			</div>
 			<div class="col-auto">
-				<input type="text" name="productName" id="productName" placeholder="제품코드 입력해주세요">
-				<input type="number" id="price" name="price" placeholder="가격 입력해주세요" />
+				<input type="text" name="productName" id="productName"
+					placeholder="제품코드 입력해주세요"> <input type="number" id="price"
+					name="price" placeholder="가격 입력해주세요" />
 			</div>
 		</div>
 		<div class="form-section">
-			<input type="text" name="title" id="title" placeholder="글 제목을 입력해 주시기 바랍니다." required>
-			<textarea id="text" name="text" th:class="form-control" rows="10" required></textarea>
-			<input type="submit" id="submitBtn" class="btn gray-background" value="글올리기">
-			<input type="button" id="homeBtn" class="btn gray-background" value="Home으로">
+			<input type="text" name="title" id="title"
+				placeholder="글 제목을 입력해 주시기 바랍니다." required>
+			<textarea id="text" name="text" th:class="form-control" rows="10"
+				required></textarea>
+			<br> <label> 메인이미지 업로드 : <input type="file" name="file"
+				accept="image/png, image/gif, image/jpeg" />
+			</label> <input type="submit" id="submitBtn" class="btn gray-background"
+				value="글올리기"> <input type="button" id="homeBtn"
+				class="btn gray-background" value="Home으로">
 		</div>
 	</form>
 </body>

@@ -1,9 +1,7 @@
 package kr.ezen.planet.controller;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,32 +55,57 @@ public class EditorController {
 	}
 
 	@PostMapping("/postProduct")
-	public String postProduct(HttpServletRequest request, Authentication auth,@RequestParam("categoryid") String categoryid , @RequestParam("price") String price,
-			@ModelAttribute ProductVO productVO, RedirectAttributes redirectAttributes) {
-		
-		log.info("==============================" + categoryid);
-		
-		//log.info("--------------------" + category_id);
+	public String postProduct(HttpServletRequest request, Authentication auth,
+			@RequestParam("categoryid") String categoryid, @RequestParam("price") String price,
+			@ModelAttribute ProductVO productVO, @RequestPart(value = "file") MultipartFile file,
+			RedirectAttributes redirectAttributes) {
+		String uploadPath = request.getServletContext().getRealPath("/static/upload/");
+		// 파일 객체 생성
+		File file2 = new File(uploadPath);
+		// 폴더가 없다면 폴더를 생성해준다.
+		if (!file2.exists()) {
+			file2.mkdirs();
+		}
+		log.info("서버 실제 경로 : " + uploadPath);
+		if (file != null && file.getSize() > 0) { // 파일이 넘어왔다면
+			try {
+				// 저장파일의 이름 중복을 피하기 위해 저장파일이름을 유일하게 만들어 준다.
+				String saveFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+				// 파일 객체를 만들어 저장해 준다.
+				File saveFile = new File(uploadPath, saveFileName);
+				// 파일 복사
+				FileCopyUtils.copy(file.getBytes(), saveFile);
+				productVO.setImg(uploadPath+saveFileName);
+			} catch (Exception e) {
+			}
+		} else {
+			productVO.setImg("");
+		}
+
+		log.info("Category ID: " + categoryid);
+
 		int category = Integer.parseInt(categoryid);
 		productVO.setCategory_id(category);
+
 		String email = null;
 		if (auth != null) {
-			Object prinipal = auth.getPrincipal();
-			if (prinipal instanceof UserDetails) {
-				email = ((UserDetails) prinipal).getUsername();
+			Object principal = auth.getPrincipal();
+			if (principal instanceof UserDetails) {
+				email = ((UserDetails) principal).getUsername();
 			} else {
-				email =prinipal.toString();
+				email = principal.toString();
 			}
 		}
-		int member_id = memberService.findUserIdByEmail(email);
-		log.info("=======================" + email);
-		log.info("=======================" + member_id);
-		productVO.setMember_id(member_id); // 사용자 ID 설정
-		int cost = Integer.parseInt(price);
-		log.info(price);
 
+		int member_id = memberService.findUserIdByEmail(email);
+		log.info("Email: " + email);
+		log.info("Member ID: " + member_id);
+
+		productVO.setMember_id(member_id);
+		int cost = Integer.parseInt(price);
 		productVO.setCost(cost);
-		productService.insert(productVO); // 제품 정보를 데이터베이스에 저장
+
+		productService.insert(productVO);
 
 		return "redirect:/"; // 저장 후 리다이렉션할 페이지 경로
 	}
@@ -121,52 +144,4 @@ public class EditorController {
 		return saveName;
 	}
 
-	@PostMapping("/fileupload")
-	@ResponseBody
-	public Map<String, Object> fileUpload(HttpServletRequest request,
-			@RequestPart(value = "upload", required = false) MultipartFile upload) {
-		// 반드시 받는 이름이 "upload"이어야 한다.
-		// json 데이터로 등록
-		// {"uploaded" : 1, "fileName" : "test.jpg", "url" : "/img/test.jpg"}
-		// 이런 형태로 리턴이 나가야함.
-		// --------------------------------------------------------------------------------------
-		// 서버의 업로드될 경로 확인
-		String uploadPath = request.getServletContext().getRealPath("/ckeditor/");
-		// 파일 객체 생성
-		File file2 = new File(uploadPath);
-		// 폴더가 없다면 폴더를 생성해준다.
-		if (!file2.exists()) {
-			file2.mkdirs();
-		}
-		log.info("서버 실제 경로 : " + uploadPath);
-		// --------------------------------------------------------------------------------------
-		String saveName = "";
-		String saveFileName = "";
-
-		if (upload != null && upload.getSize() > 0) { // 파일이 넘어왔다면
-			try {
-				// 저장파일의 이름 중복을 피하기 위해 저장파일이름을 유일하게 만들어 준다.
-				saveFileName = UUID.randomUUID() + "_" + upload.getOriginalFilename();
-				// 파일 객체를 만들어 저장해 준다.
-				File saveFile = new File(uploadPath, saveFileName);
-				// 파일 복사
-				FileCopyUtils.copy(upload.getBytes(), saveFile);
-				saveName = request.getContextPath() + "/ckeditor/" + saveFileName;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		/*
-		 * VO를 만들었다면 CkeditorResultVO vo = new CkeditorResultVO();
-		 * vo.setFileName(saveFileName); vo.setUploaded(1); vo.setUrl(saveName);
-		 * log.info("리턴값 : " + vo); return vo;
-		 */
-		// VO가 없다면 맵으로 받아 처리
-		Map<String, Object> map = new HashMap<>();
-		map.put("fileName", saveFileName);
-		map.put("uploaded", 1);
-		map.put("url", saveName);
-		return map;
-	}
-	// ---------------------------------------------------------------------------------------------------------------
 }
