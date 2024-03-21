@@ -1,9 +1,10 @@
 <nav class="container-fluid">
 	<ul>
-		<li style="margin-right: 50%"><a href="/"><img
-				src="./img/logo2.png" width="150" height="150" /></a> <strong>PLANET
-				중고장터</strong></li>
-
+		<li><a href="/"><img
+				src="./img/logo2.png" width="150" height="150" /></a></li></ul>
+<strong style="font-size: 300%; padding-top: 50px;">PLANET
+				중고장터</strong>				
+<ul>
 		<th:block th:if="${session.user != NULL}">
 			<strong>[[${session.user.principal.username}]]
 				([[${session.user.principal.name}]]) </strong>

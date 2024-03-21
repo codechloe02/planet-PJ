@@ -24,11 +24,12 @@ import kr.ezen.planet.vo.ProductVO;
 @Configuration
 public class ProductController {
 
-	@Autowired(required = true)
+	@Autowired
 	private ProductService productService;
 
-	@Autowired(required = true)
+	@Autowired
 	private MemberService memberService;
+	
 	@Autowired
 	private CategoryService categoryService;
 

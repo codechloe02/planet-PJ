@@ -1,5 +1,7 @@
 package kr.ezen.planet.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -18,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import kr.ezen.planet.sevice.CategoryService;
 import kr.ezen.planet.sevice.MailService;
 import kr.ezen.planet.sevice.MemberService;
+import kr.ezen.planet.vo.CategoryVO;
 import kr.ezen.planet.vo.MailVO;
 import kr.ezen.planet.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +37,8 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	private CategoryService categoryService;
 
 	@GetMapping(value = { "/index", "/home", "/main" })
 	public String index(Model model) {
@@ -68,7 +74,8 @@ public class MemberController {
 
 		// 조회된 회원 정보를 모델에 추가합니다.
 		model.addAttribute("member", member);
-
+		List<CategoryVO> categoryList = categoryService.selectAll();
+		model.addAttribute("categoryList", categoryList);
 		// memberInfo.html 뷰를 반환합니다.
 		return "memberInfo";
 	}
@@ -79,6 +86,8 @@ public class MemberController {
 		String email = authentication.getName();
 		MemberVO member = memberService.selectByEmail(email);
 		model.addAttribute("member", member);
+		List<CategoryVO> categoryList = categoryService.selectAll();
+		model.addAttribute("categoryList", categoryList);
 		return "memberEdit";
 	}
 
@@ -176,9 +185,9 @@ public class MemberController {
 
 	@GetMapping(value = { "/dbInit" })
 	public String dbInit() {
-	jdbcTemplate.update("update member set password=? where email=?",
-	passwordEncoder.encode("1234"),"planetad0202@gmail.com");
-	return "redirect:/";
+		jdbcTemplate.update("update member set password=? where email=?", passwordEncoder.encode("1234"),
+				"planetad0202@gmail.com");
+		return "redirect:/";
 	}
 
 	@GetMapping(value = "/join/emailCheck", produces = "text/plain;charset=UTF-8")

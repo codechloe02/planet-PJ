@@ -3,65 +3,88 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>회원정보 수정</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-<link href="css/memberstyle.css" rel="stylesheet" />
-<script
-	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-<script type="text/javascript">
-	function daumPostcode() {
-		new daum.Postcode({
-			oncomplete : function(data) {
-				var roadAddr = data.roadAddress;
-				document.getElementById('zipcode').value = data.zonecode;
-				document.getElementById("addr").value = roadAddr;
-			}
-		}).open();
-		document.getElementById("addr_d").focus();
-	}
-</script>
-</head>
+<head th:replace="layout/memberHead">
 <body>
-	<div class="container">
-		<form method="POST" action="updateOk" class="form-group">
-			<h2>회원정보 수정</h2>
-			<div class="form-row">
-				<label for="email">닉네임</label> <input name="email" id="email"
-					type="text" class="form-control" th:value="${member.email}"
-					readonly="readonly"> <br> <label for="nickname">닉네임</label>
-				<input name="nickname" id="nickname" type="text"
-					class="form-control" th:value="${member.nickname}"> <br>
-				<label for="name">이름</label> <input name="name" id="name"
-					type="text" class="form-control" th:value="${member.name}">
-				<br> <label for="phonenumber">전화번호</label> <input
-					name="phonenumber" id="phonenumber" type="text"
-					class="form-control" th:value="${member.phonenumber}"><br>
+	<div class="page-layout">
 
-				<div class="zip-field">
-					<label for="zipcode">우편번호 :</label> <input name="zipcode"
-						id="zipcode" type="text" class="form-control"
-						th:value="${member.zipcode}" required onclick="daumPostcode()"
-						readonly> <input type="button" value="우편번호 검색"
-						onclick="daumPostcode()" /> <br>
+		<div th:replace="layout/header"></div>
+
+		<div class="content-container">
+			<div th:replace="layout/sidebar"></div>
+			<main class="main-content">
+
+
+				<div class="container">
+					<form method="POST" action="updateOk" class="form-group">
+						<h2>회원정보 수정</h2>
+						<div class="form-row">
+							<label for="email">닉네임</label> <input name="email" id="email"
+								type="text" class="form-control" th:value="${member.email}"
+								readonly="readonly"> <br> <label for="nickname">닉네임</label>
+							<input name="nickname" id="nickname" type="text"
+								class="form-control" th:value="${member.nickname}"> <br>
+							<label for="name">이름</label> <input name="name" id="name"
+								type="text" class="form-control" th:value="${member.name}">
+							<br> <label for="phonenumber">전화번호</label> <input
+								name="phonenumber" id="phonenumber" type="text"
+								class="form-control" th:value="${member.phonenumber}"><br>
+
+							<div class="zip-field">
+								<label for="zipcode">우편번호 :</label> <input name="zipcode"
+									id="zipcode" type="text" class="form-control"
+									th:value="${member.zipcode}" required onclick="daumPostcode()"
+									readonly> <input type="button" value="우편번호 검색"
+									onclick="daumPostcode()" /> <br>
+							</div>
+							<label for="addr">주소</label> <input name="addr" id="addr"
+								type="text" class="form-control" th:value="${member.addr}"
+								required onclick="daumPostcode()" readonly> <label
+								for="addr_d">상세주소</label> <input name="addr_d" id="addr_d"
+								type="text" class="form-control" th:value="${member.addr_d}"
+								required>
+						</div>
+						<div class="flex-container">
+							<button type="submit" onclick="location.href='/memberInfo'">수정</button>
+							<button type="button" class="btn btn-secondary"
+								onclick="location.href='/'">취소</button>
+						</div>
+					</form>
 				</div>
-				<label for="addr">주소</label> <input name="addr" id="addr"
-					type="text" class="form-control" th:value="${member.addr}" required
-					onclick="daumPostcode()" readonly> <label for="addr_d">상세주소</label>
-				<input name="addr_d" id="addr_d" type="text" class="form-control"
-					th:value="${member.addr_d}" required>
-			</div>
-			<div class="flex-container">
-				<button type="submit" onclick="location.href='/memberInfo'">수정</button>
-				<button type="button" class="btn btn-secondary"
-					onclick="location.href='/'">취소</button>
-			</div>
-		</form>
+			</main>
+		</div>
 	</div>
+
+<div th:insert="layout/footer"></div>
+
+	<script
+		src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script type="text/javascript">
+		function daumPostcode() {
+			new daum.Postcode({
+				oncomplete : function(data) {
+					var roadAddr = data.roadAddress;
+					document.getElementById('zipcode').value = data.zonecode;
+					document.getElementById("addr").value = roadAddr;
+				}
+			}).open();
+			document.getElementById("addr_d").focus();
+		}
+	</script>
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

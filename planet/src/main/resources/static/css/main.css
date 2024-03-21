@@ -1,0 +1,262 @@
+:root {
+	--font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI",
+		Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+		"Noto Color Emoji";
+	--font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+		"Liberation Mono", "Courier New", monospace;
+	--line-height: 1.5;
+	--font-weight: 400;
+	--font-size: 16px;
+	--border-radius: 0.25rem;
+	--border-width: 1px;
+	--outline-width: 3px;
+	--spacing: 1rem;
+	--typography-spacing-vertical: 1.5rem;
+	--block-spacing-vertical: calc(var(--spacing)* 2);
+	--block-spacing-horizontal: var(--spacing);
+	--grid-spacing-vertical: 0;
+	--grid-spacing-horizontal: var(--spacing);
+	--form-element-spacing-vertical: 0.75rem;
+	--form-element-spacing-horizontal: 1rem;
+	--nav-element-spacing-vertical: 1rem;
+	--nav-element-spacing-horizontal: 0.5rem;
+	--nav-link-spacing-vertical: 0.5rem;
+	--nav-link-spacing-horizontal: 0.5rem;
+	--form-label-font-weight: var(--font-weight);
+	--transition: 0.2s ease-in-out;
+	--modal-overlay-backdrop-filter: blur(0.25rem);
+	--line-height: 1.5;
+}
+
+*, ::after, ::before {
+	box-sizing: border-box
+}
+
+nav, nav ul {
+	display: flex
+}
+
+nav {
+	justify-content: space-between
+}
+
+nav ol, nav ul {
+	align-items: center;
+	margin-bottom: 0;
+	padding: 0;
+	list-style: none
+}
+
+nav ol:first-of-type, nav ul:first-of-type {
+	margin-left: calc(var(--nav-element-spacing-horizontal)* -1)
+}
+
+nav ol:last-of-type, nav ul:last-of-type {
+	margin-right: calc(var(--nav-element-spacing-horizontal)* -1)
+}
+
+nav li {
+	display: inline-block;
+	margin: 0;
+	padding: var(--nav-element-spacing-vertical)
+		var(--nav-element-spacing-horizontal)
+}
+
+nav li>* {
+	--spacing: 0
+}
+
+nav :where(a, [role=link]) {
+	display: inline-block;
+	margin: calc(var(--nav-link-spacing-vertical)* -1)
+		calc(var(--nav-link-spacing-horizontal)* -1);
+	padding: var(--nav-link-spacing-vertical)
+		var(--nav-link-spacing-horizontal);
+	border-radius: var(--border-radius);
+	text-decoration: none
+}
+
+nav :where(a, [role=link]):is([aria-current], :hover, :active, :focus) {
+	text-decoration: none
+}
+
+nav[aria-label=breadcrumb] {
+	align-items: center;
+	justify-content: start
+}
+
+nav[aria-label=breadcrumb] ul li:not(:first-child) {
+	margin-inline-start: var(--nav-link-spacing-horizontal)
+}
+
+nav[aria-label=breadcrumb] ul li:not(:last-child) ::after {
+	position: absolute;
+	width: calc(var(--nav-link-spacing-horizontal)* 2);
+	margin-inline-start: calc(var(--nav-link-spacing-horizontal)/2);
+	content: "/";
+	color: var(--muted-color);
+	text-align: center
+}
+
+nav[aria-label=breadcrumb] a[aria-current] {
+	background-color: transparent;
+	color: inherit;
+	text-decoration: none;
+	pointer-events: none
+}
+
+nav [role=button] {
+	margin-right: inherit;
+	margin-left: inherit;
+	padding: var(--nav-link-spacing-vertical)
+		var(--nav-link-spacing-horizontal)
+}
+
+address, blockquote, dl, figure, form, ol, p, pre, table, ul {
+	margin-top: 0;
+	margin-bottom: var(--typography-spacing-vertical);
+	color: var(--color);
+	font-style: normal;
+	font-weight: var(--font-weight);
+	font-size: var(--font-size)
+}
+
+.content-container {
+	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+	display: flex; /* 내부 요소를 가로로 배열 */
+}
+
+aside li, aside ol, aside ul {
+	display: block;
+}
+
+aside li {
+	padding: calc(var(--nav-element-spacing-vertical)* .5)
+		var(--nav-element-spacing-horizontal)
+}
+/*side 링크값 변경*/
+aside li a {
+	display: block;
+	color: #008040;
+	text-decoration: none;
+}
+
+strong {
+	font-size: 120%;
+}
+
+article, aside, figcaption, figure, footer, header, hgroup, main,
+	section {
+	display: block
+}
+
+/* 사이드바 스타일 */
+.side-bar {
+	width: var(--side-bar-width);
+	min-height: var(--side-bar-height);
+	margin-top: calc(( 100vh - var(--side-bar-height))/2);
+}
+
+/* 메인 컨텐츠 스타일 */
+.main-content {
+	flex-grow: 1; /* 메인 컨텐츠가 남은 공간을 모두 차지하도록 설정 */
+	padding-left: var(--side-bar-width);
+	/* 사이드바 너비만큼 패딩을 추가하여 내용이 겹치지 않도록 함 */
+}
+
+.form-section {
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+.form-section input[type="text"], .form-section textarea, .form-section .dropdown
+	{
+	width: 100%;
+}
+
+.form-section label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.gray-background {
+	background-color: #6c757d; /* Bootstrap's gray color */
+	color: white;
+}
+
+.gray-background:hover {
+	background-color: #5a6268; /* Darker shade for hover effect */
+}
+
+#submitBtn, #homeBtn {
+	margin-top: 20px;
+}
+
+button, [role="button"] {
+	cursor: pointer;
+	background-color: #4CAF50; /* Green */
+	color: white; /* Set button text color to white */
+	border: none;
+	text-decoration: none;
+}
+
+.pagination {
+	display: -ms-flexbox;
+	display: flex;
+	padding-left: 0;
+	list-style: none;
+	border-radius: .25rem;
+	justify-content: center;
+}
+
+.page-link {
+	position: relative;
+	display: block;
+	padding: .5rem .75rem;
+	margin-left: -1px;
+	line-height: 1.25;
+	color: #007bff;
+	background-color: #fff;
+	border: 1px solid #dee2e6
+}
+
+.page-link:hover {
+	z-index: 2;
+	color: #0056b3;
+	text-decoration: none;
+	background-color: #e9ecef;
+	border-color: #dee2e6
+}
+
+.page-link:focus {
+	z-index: 2;
+	outline: 0;
+	box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25)
+}
+
+.page-item:first-child .page-link {
+	margin-left: 0;
+	border-top-left-radius: .25rem;
+	border-bottom-left-radius: .25rem
+}
+
+.page-item:last-child .page-link {
+	border-top-right-radius: .25rem;
+	border-bottom-right-radius: .25rem
+}
+
+.page-item.active .page-link {
+	z-index: 1;
+	color: #fff;
+	background-color: #008000;
+	border-color: #008000
+}
+
+.page-item.disabled .page-link {
+	color: #6c757d;
+	pointer-events: none;
+	cursor: auto;
+	background-color: #fff;
+	border-color: #dee2e6
+}

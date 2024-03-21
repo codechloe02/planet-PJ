@@ -2,88 +2,101 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>회원 정보</title>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-<link href="css/memberstyle.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script type="text/javascript">
-	function pwCheck() {
-		var password = prompt('암호를 입력하세요');
-		$.ajax({
-			url : "/pwCheck",
-			type : "POST",
-			data : {
-				userpw : password
-			},
-			success : function(response) {
-				window.location.href = response;
-			},
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head th:replace="layout/memberHead">
 
-			  error : function(xhr, status, error) {
-				  var errorMessage = xhr.responseText || "비밀번호를 다시 확인해 주세요.";
-		            alert(errorMessage);
-			}
-		});
-	}
-	
-	function deletOk() {
-		var password = prompt('암호를 입력하세요');
-		$.ajax({
-			url : "/deletOk",
-			type : "POST",
-			data : {
-				userpw : password
-			},
-			success : function(response) {
-				window.location.href = response;
-			},
 
-			  error : function(xhr, status, error) {
-				  var errorMessage = xhr.responseText || "비밀번호를 다시 확인해 주세요.";
-		            alert(errorMessage);
-			}
-		});
-	}
-</script>
+</head><body>
+	<div class="page-layout">
 
-</head>
-<body>
-	<div class="container">
-		<h1>회원 정보</h1>
-		<div class="member-info">
-			<p>
-				<strong>이메일:</strong> <span th:text="${member.email}"></span>
-			</p>
-			<p>
-				<strong>닉네임:</strong> <span th:text="${member.nickname}"></span>
-			</p>
-			<p>
-				<strong>이름:</strong> <span th:text="${member.name}"></span>
-			</p>
-			<p>
-				<strong>전화번호:</strong> <span th:text="${member.phonenumber}"></span>
-			</p>
-			<p>
-				<strong>주소:</strong> <span th:text="${member.addr}"></span>
-			</p>
-			<p>
-				<strong>상세 주소:</strong> <span th:text="${member.addr_d}"></span>
-			</p>
-			<p>
-				<strong>우편번호:</strong> <span th:text="${member.zipcode}"></span>
-			</p>
-			<p>
-				<strong>가입 날짜:</strong> <span
-					th:text="${#dates.format(member.createDate, 'yyyy-MM-dd')}"></span>
-			</p>
-			<p>
-				<strong>신뢰도:</strong> <span th:text="${member.reliability}"></span>
-			</p>
-		</div>
-			<input type="button" value="정보수정" onClick="pwCheck()">
-			<input type="button" value="회원탈퇴" onClick="deletOk()">
+		<div th:replace="layout/header"></div>
+
+		<div class="content-container">
+			<div th:replace="layout/sidebar"></div>
+			<main class="main-content">
+
+
+				<div class="container">
+					<h1>회원 정보</h1>
+					<div class="member-info">
+						<p>
+							<strong>이메일:</strong> <span th:text="${member.email}"></span>
+						</p>
+						<p>
+							<strong>닉네임:</strong> <span th:text="${member.nickname}"></span>
+						</p>
+						<p>
+							<strong>이름:</strong> <span th:text="${member.name}"></span>
+						</p>
+						<p>
+							<strong>전화번호:</strong> <span th:text="${member.phonenumber}"></span>
+						</p>
+						<p>
+							<strong>주소:</strong> <span th:text="${member.addr}"></span>
+						</p>
+						<p>
+							<strong>상세 주소:</strong> <span th:text="${member.addr_d}"></span>
+						</p>
+						<p>
+							<strong>우편번호:</strong> <span th:text="${member.zipcode}"></span>
+						</p>
+						<p>
+							<strong>가입 날짜:</strong> <span
+								th:text="${#dates.format(member.createDate, 'yyyy-MM-dd')}"></span>
+						</p>
+						<p>
+							<strong>신뢰도:</strong> <span th:text="${member.reliability}"></span>
+						</p>
+					</div>
+					<input type="button" value="정보수정" onClick="pwCheck()"> <input
+						type="button" value="회원탈퇴" onClick="deletOk()">
 					<button type="button" onclick="location.href='/newpassword'">비밀번호수정</button>
+				</div>
+			</main>
+		</div>
 	</div>
+	<div th:insert="layout/footer"></div>
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script type="text/javascript">
+		function pwCheck() {
+			var password = prompt('암호를 입력하세요');
+			$.ajax({
+				url : "/pwCheck",
+				type : "POST",
+				data : {
+					userpw : password
+				},
+				success : function(response) {
+					window.location.href = response;
+				},
+
+				error : function(xhr, status, error) {
+					var errorMessage = xhr.responseText || "비밀번호를 다시 확인해 주세요.";
+					alert(errorMessage);
+				}
+			});
+		}
+
+		function deletOk() {
+			var password = prompt('암호를 입력하세요');
+			$.ajax({
+				url : "/deletOk",
+				type : "POST",
+				data : {
+					userpw : password
+				},
+				success : function(response) {
+					window.location.href = response;
+				},
+
+				error : function(xhr, status, error) {
+					var errorMessage = xhr.responseText || "비밀번호를 다시 확인해 주세요.";
+					alert(errorMessage);
+				}
+			});
+		}
+	</script>
+
 </body>
 </html>
