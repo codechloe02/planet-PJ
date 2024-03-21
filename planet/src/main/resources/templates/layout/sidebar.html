@@ -1,0 +1,8 @@
+
+<aside class="side-bar">
+	<ul>
+		<li th:each="category : ${categoryList}"><a
+			th:href="@{'/category/' + ${category.id}}" th:text="${category.name}">카테고리
+				이름</a></li>
+	</ul>
+</aside>

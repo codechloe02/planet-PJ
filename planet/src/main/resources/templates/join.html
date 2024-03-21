@@ -11,12 +11,11 @@
 <style>
 body, html {
 	height: 100%;
-	background-color: black;
-	background-image:
-		url('https://images.unsplash.com/photo-1494526585095-c41746248156?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
-	background-size: cover;
+	margin: 0;
+	background-color: #f0f0f0;
+	background-image: url('./img/logo2.png');
 	background-position: center;
-	color: white;
+	color: #333;
 }
 
 .container {
@@ -26,47 +25,42 @@ body, html {
 	transform: translate(-50%, -50%);
 	width: 40%;
 	padding: 20px;
-	background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent */
+	background-color: rgba(255, 255, 255, 0.8);
 	border-radius: 10px;
-	color: white;
+	color: #333;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form-control, button {
+input, button {
+	width: 100%;
 	margin-bottom: 8px;
-	padding: 10px;
+	padding: 12px;
 	border-radius: 5px;
-	color: white;
+	border: 1px solid #ccc;
+	color: #333;
 }
 
 button {
 	cursor: pointer;
-	background-color: #4CAF50;
+	background-color: #4CAF50; /* Green */
 	color: white;
+	border: none;
 }
 
-.form-heading {
-	text-align: center;
+.form-group {
 	margin-bottom: 20px;
 }
 
-.zipcode-container {
-	display: flex;
-	justify-content: space-between;
-}
-
-.zipcode-container input, .zipcode-container button {
-	width: 48%; /* Adjust the width as needed */
-}
-
-h2, h3, p {
-	color: white;
+h1, p {
+	color: #333;
 }
 </style>
 </head>
 <body>
 	<div class="container">
-		<form method="POST" action="joinOk" class="form-group" onsubmit="return false;">
-			<h2 class="form-heading">Join</h2>
+		<form method="POST" action="joinOk" class="form-group"
+			onsubmit="return false;">
+			<h2 class="form-heading" style="text-align: center">회원가입</h2>
 			<div class="col-auto">
 				<span id="emailMessage"></span>
 			</div>

@@ -1,0 +1,22 @@
+<nav class="container-fluid">
+	<ul>
+		<li style="margin-right: 50%"><a href="/"><img
+				src="./img/logo2.png" width="150" height="150" /></a> <strong>PLANET
+				중고장터</strong></li>
+
+		<th:block th:if="${session.user != NULL}">
+			<strong>[[${session.user.principal.username}]]
+				([[${session.user.principal.name}]]) </strong>
+			<br />
+			<li><a th:href="@{/memberInfo}" role="button">회원정보</a></li>
+			<li><a th:href="@{/editor}" role="button">글쓰기</a></li>
+			<li><a th:href="@{/list}" role="button">글목록 보기</a></li>
+			<li><a th:href="@{/logout}" role="button">Logout</a></li>
+		</th:block>
+		<th:block th:if="${session.user == NULL}">
+			<li><a th:href="@{/login}" role="button">Login</a></li>
+			<li><a th:href="@{/join}" role="button">회원가입</a></li>
+		</th:block>
+	</ul>
+
+</nav>

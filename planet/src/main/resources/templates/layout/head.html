@@ -1,0 +1,83 @@
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style type="text/css">
+.page-layout {
+	display: flex; /* Flexbox를 사용하여 자식 요소들을 가로로 배열 */
+	flex-direction: column; /* 요소들을 세로 방향으로 쌓음 */
+}
+
+/* 네비게이션 바와 푸터 스타일 */
+nav.container-fluid, footer.container {
+	flex-shrink: 0; /* 네비게이션 바와 푸터가 축소되지 않도록 설정 */
+	text-align: center;
+}
+
+/* 메인 컨텐츠와 사이드바가 포함될 컨테이너 */
+.content-container {
+	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+	display: flex; /* 내부 요소를 가로로 배열 */
+}
+
+/* 사이드바 스타일 */
+.side-bar {
+	width: var(--side-bar-width);
+	min-height: var(--side-bar-height);
+	margin-top: calc(( 100vh - var(--side-bar-height))/2);
+}
+
+/* 메인 컨텐츠 스타일 */
+.main-content {
+	flex-grow: 1; /* 메인 컨텐츠가 남은 공간을 모두 차지하도록 설정 */
+	padding-left: var(--side-bar-width);
+	/* 사이드바 너비만큼 패딩을 추가하여 내용이 겹치지 않도록 함 */
+}
+
+.form-section {
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+.form-section input[type="text"], .form-section textarea, .form-section .dropdown
+	{
+	width: 100%;
+}
+
+.form-section label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.gray-background {
+	background-color: #6c757d; /* Bootstrap's gray color */
+	color: white;
+}
+
+.gray-background:hover {
+	background-color: #5a6268; /* Darker shade for hover effect */
+}
+
+#submitBtn, #homeBtn {
+	margin-top: 20px;
+}
+
+input, button, [role="button"] {
+	width: 100%;
+	margin-bottom: 8px;
+	padding: 12px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	color: white; /* Ensures text color is white */
+}
+
+button, [role="button"] {
+	cursor: pointer;
+	background-color: #4CAF50; /* Green */
+	color: white; /* Set button text color to white */
+	border: none;
+}
+</style>
+
+</head>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+<title>PLANET 중고장터</title>
+<style type="text/css">
+.page-layout {
+	display: flex; /* Flexbox를 사용하여 자식 요소들을 가로로 배열 */
+	flex-direction: column; /* 요소들을 세로 방향으로 쌓음 */
+}
+
+/* 네비게이션 바와 푸터 스타일 */
+nav.container-fluid, footer.container {
+	flex-shrink: 0; /* 네비게이션 바와 푸터가 축소되지 않도록 설정 */
+	text-align: center;
+}
+
+/* 메인 컨텐츠와 사이드바가 포함될 컨테이너 */
+.content-container {
+	flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+	display: flex; /* 내부 요소를 가로로 배열 */
+}
+
+/* 사이드바 스타일 */
+.side-bar {
+	width: var(--side-bar-width);
+	min-height: var(--side-bar-height);
+	margin-top: calc(( 100vh - var(--side-bar-height))/2);
+}
+
+/* 메인 컨텐츠 스타일 */
+.main-content {
+	flex-grow: 1; /* 메인 컨텐츠가 남은 공간을 모두 차지하도록 설정 */
+	padding-left: var(--side-bar-width);
+	/* 사이드바 너비만큼 패딩을 추가하여 내용이 겹치지 않도록 함 */
+}
+
+input, button, [role="button"] {
+	width: 100%;
+	margin-bottom: 8px;
+	padding: 12px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	color: white; /* Ensures text color is white */
+}
+
+button, [role="button"] {
+	cursor: pointer;
+	background-color: #4CAF50; /* Green */
+	color: white; /* Set button text color to white */
+	border: none;
+}
+</style>
+
+
+
+</head>
+<body>
+	<div class="page-layout">
+		<nav class="container-fluid">
+			<ul>
+				<li><a href="/"><img src="./img/logo2.png" width="150"
+						height="150" /></a> <strong>PLANET 중고장터</strong></li>
+			</ul>
+			<ul>
+				<th:block th:if="${session.user != NULL}">
+					<strong>[[${session.user.principal.username}]]
+						([[${session.user.principal.name}]]) </strong>
+					<br />
+					<li><a th:href="@{/memberInfo}" role="button">회원정보</a></li>
+					<li><a th:href="@{/editor}" role="button">글쓰기</a></li>
+					<li><a th:href="@{/list}" role="button">글목록 보기</a></li>
+					<li><a th:href="@{/logout}" role="button">Logout</a></li>
+				</th:block>
+				<th:block th:if="${session.user == NULL}">
+					<li><a th:href="@{/login}" role="button">Login</a></li>
+					<li><a th:href="@{/join}" role="button">회원가입</a></li>
+				</th:block>
+			</ul>
+		</nav>
+
+		<div class="content-container">
+			<aside class="side-bar">
+				<ul>
+					<li th:each="category : ${categoryList}"><a
+						th:href="@{'/category/' + ${category.id}}"
+						th:text="${category.name}">카테고리 이름</a></li>
+				</ul>
+			</aside>
+			<main class="main-content">
+				<section class="py-5">
+					<div class="container px-4 px-lg-5 mt-5">
+						<div
+							class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+							<th:block th:if="${pv.totalCount==0}">
+								<tr>
+									<td colspan="5" class="sub_title" style="text-align: center;">
+										등록된 글이 없습니다.</td>
+								</tr>
+							</th:block>
+							<th:block th:if="${pv.totalCount>0}">
+								<div th:each="vo : ${pv.list}" class="col mb-5">
+									<div class="card h-100">
+										<div class="card-body p-4">
+											<div class="text-center">
+												<h5 class="fw-bolder">[[${vo.id}]]</h5>
+												<span>[[${vo.title}]]</span>
+											</div>
+										</div>
+										<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+											<div class="text-center">
+												<form th:action="@{'/product/' + ${vo.id}}" method="get">
+													<button class="btn btn-outline-dark" type="submit">보러가기</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</th:block>
+						</div>
+					</div>
+					<table>
+						<tr>
+							<td colspan="5" class="sub_title">[(${pv.pageList2})]</td>
+						</tr>
+					</table>
+
+
+				</section>
+			</main>
+		</div>
+	</div>
+	<footer class="container"> PLANET 박지은 백진규 손유승 </footer>
+</body>
+</html>
