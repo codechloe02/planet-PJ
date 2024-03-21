@@ -5,13 +5,13 @@ import lombok.ToString;
 
 // 글번호, 현재페이지 번호, 페이지당 글 수 , 페이지 목록 수를 받기 위한 공통 변수를 가지는 클래스
 @Getter @ToString
-public class Common {
+public class CommonVO {
 	private int p = 1;
 	private int s = 10;
 	private int b = 10;
 	private int idx = 0;
 	private int currentPage = 1;
-	private int sizeOfPage = 10;
+	private int sizeOfPage = 12;
 	private int sizeOfBlock = 10;
 	private String mode = "insert";
 	

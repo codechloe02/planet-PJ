@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Home</title>
+<style type="text/css">
+div {
+	border: 1px solid gray;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+
+a:link {
+	text-decoration: none;
+	color: black;
+}
+
+a:active {
+	text-decoration: none;
+	color: green;
+}
+
+a:hover {
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+}
+
+a:visited {
+	text-decoration: none;
+	color: black;
+}
+</style>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+</head>
+<body>
+
+	<div>
+		<th:block th:if="${session.user != NULL}">
+			[[${session.user.principal.username}]]
+			([[${session.user.principal.name}]])
+			님 반갑습니다.
+			<br />
+			[ <a th:href="@{/logout}">Logout</a> ]
+			[ <a th:href="@{/memberInfo}">회원정보</a> ]
+			[ <a th:href="@{/editor}">글쓰기</a> ]
+			[ <a th:href="@{/list}">글목록 보기</a> ]
+		</th:block>
+		<th:block th:if="${session.user == NULL}">
+			로그인 화면이 나와야 한다.
+			<br />
+			<a th:href="@{/login}">Login</a> | 
+			<a th:href="@{/join}">회원가입</a>
+		</th:block>
+	</div>
+
+</body>
+</html>

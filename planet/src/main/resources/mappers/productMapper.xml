@@ -11,7 +11,8 @@
 		completedate, category_id)
 		VALUES (product_idx.nextval, #{member_id},
 		#{productName}, #{cost},
-		#{title}, #{text}, #{img}, CURRENT_DATE, 0, '',
+		#{title}, #{text}, #{img}, CURRENT_DATE, 0,
+		'',
 		#{category_id})
 	</insert>
 
@@ -19,5 +20,52 @@
 	<select id="selectAll" resultType="ProductVO">
 		select * from product
 	</select>
+	<!-- 1페이지 분량 얻기 -->
+	<select id="selectProductList" parameterType="hashmap"
+		resultType="ProductVO">
+		select
+		R.*
+		from
+		(
+		select
+		rownum rnum , Q.*
+		from
+		(select * from Product order
+		by id desc) Q
+		where
+            <![CDATA[
+            rownum <= #{endNo}
+            ]]>
+		) R
+		where
+      <![CDATA[
+      rnum >= #{startNo}   
+      ]]>
+	</select>
+	<!-- 1개 얻기 -->
+	<select id="selectByIdx" parameterType="int"
+		resultType="ProductVO">
+		select *
+		from Product where id=#{id}
+	</select>
 
+	<update id="update" parameterType="ProductVO">
+		update Product set
+		text=#{text},
+		title=#{title}, image=#{image} where id=#{id}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from Product where
+		id=#{id}
+	</delete>
+	<!-- 전체 얻기 -->
+	<select id="selectCount" resultType="int">
+		select count(*) from Product
+	</select>
+	<!-- 검색 -->
+	<select id="searchProducts" parameterType="string"
+		resultType="ProductVO">
+		SELECT * FROM Product WHERE title LIKE '%' || #{keyword} ||
+		'%'
+	</select>
 </mapper>

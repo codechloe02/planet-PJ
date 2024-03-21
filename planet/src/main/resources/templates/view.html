@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Planet - 상세페이지</title>
+</head>
+<body>
+    <!-- 뒤로가기 버튼 -->
+    <button id="backButton">목록으로</button>
+
+    <script>
+        // 뒤로가기 버튼 클릭 시 이전 페이지로 이동
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.history.back(); // 브라우저의 이전 이력으로 이동
+        });
+    </script>
+	<div th:if="${product != null}">
+		<table border="3px" align="center">
+			<tr>
+				<th>No</th>
+				<th>상품</th>
+				<th>제목</th>
+				<th>이미지</th>
+				<th>내용</th>
+				<th>가격</th>
+				<th>작성자</th>
+				<th>작성일</th>
+			</tr>
+			<tr>
+				<td th:text="${product.id}"></td>
+				<td th:text="${product.productName}"></td>
+				<td th:text="${product.title}"></td>
+				<td>
+					<div class="image-container">
+						<img class="product-image"
+							th:src="@{${product.img} ? '/upload/' + ${product.img} : '/upload/이미지준비중.png'}"
+							alt="Product Image">
+					</div>
+				</td>
+				<td th:text="${product.text}"></td>
+				<td th:text="${product.cost}"></td>
+				<td th:text="${member.nickname}"></td>
+				<td th:text="${product.productdate}"></td>
+			</tr>
+		</table>
+	</div><script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function() {
+			var productImages = document.querySelectorAll('.product-image');
+			productImages.forEach(function(img) {
+				img.addEventListener('error', function() {
+					img.style.display = 'none';
+					img.nextElementSibling.style.display = 'block';
+				});
+			});
+		});
+	</script>
+<style>
+
+.image-container {
+	position: relative;
+}
+
+</style>
+</body>
+</html>

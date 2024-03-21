@@ -34,10 +34,10 @@ public class MemberController {
 	@Autowired
 	private MailService mailService;
 
-	@GetMapping(value = { "/", "/index", "/home", "/main" })
+	@GetMapping(value = { "/index", "/home", "/main" })
 	public String index(Model model) {
 
-		return "index";
+		return "index1";
 	}
 
 	@GetMapping("/mypage")
