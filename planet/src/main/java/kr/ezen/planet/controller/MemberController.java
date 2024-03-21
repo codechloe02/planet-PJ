@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import kr.ezen.planet.sevice.MailService;
 import kr.ezen.planet.sevice.MemberService;
-import kr.ezen.planet.sevice.ProductService;
 import kr.ezen.planet.vo.MailVO;
 import kr.ezen.planet.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -163,8 +163,8 @@ public class MemberController {
 		return "redirect:/login";
 	}
 
-	// @Autowired
-	// private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	@GetMapping("favicon.ico")
 	public String favicon() {
@@ -174,13 +174,12 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	// @GetMapping(value = { "/dbInit" })
-	// public String dbInit() {
-	// jdbcTemplate.update("update member set password=? where email=?",
-	// passwordEncoder.encode("1234"),"planetad0202@gmail.com");
-
-	// return "redirect:/";
-	// }
+	@GetMapping(value = { "/dbInit" })
+	public String dbInit() {
+	jdbcTemplate.update("update member set password=? where email=?",
+	passwordEncoder.encode("1234"),"planetad0202@gmail.com");
+	return "redirect:/";
+	}
 
 	@GetMapping(value = "/join/emailCheck", produces = "text/plain;charset=UTF-8")
 	@ResponseBody

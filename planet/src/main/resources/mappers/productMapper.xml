@@ -11,7 +11,7 @@
 		completedate, category_id)
 		VALUES (product_idx.nextval, #{member_id},
 		#{productName}, #{cost},
-		#{title}, #{text}, #{img}, sysdate, 0, '',
+		#{title}, #{text}, #{img}, CURRENT_DATE, 0, '',
 		#{category_id})
 	</insert>
 
