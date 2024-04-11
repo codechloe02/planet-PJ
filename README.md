@@ -14,5 +14,5 @@ log in 화면
 이미지 업로드된 모습
 <img src="https://github.com/codechloe02/imgs/blob/main/PLANET3.png?raw=true">
 
-쓴글 읽은 모습
+글 보기 완료
 <img src="https://github.com/codechloe02/imgs/blob/main/PLANET.png?raw=true">
