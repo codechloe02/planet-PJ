@@ -2,4 +2,4 @@
 /gradle-wrapper.properties
 /logback.xml
 /static/
-.css
+*.css
